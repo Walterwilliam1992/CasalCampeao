@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 O Casal Campeão - Álbum de Figurinhas do Nosso Amor</title>
+    
+    <!-- Meta SEO -->
+    <meta name="description" content="Crie um álbum de figurinhas interativo e personalizado para celebrar o amor no clima da Copa do Mundo de 2026. 100% gratuito e compartilhável!">
+    <meta property="og:title" content="🏆 O Casal Campeão - Álbum de Figurinhas do Nosso Amor">
+    <meta property="og:description" content="Celebre o amor no clima da Copa do Mundo de 2026 com este álbum interativo.">
+    <meta property="og:type" content="website">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,700;0,900;1,700&family=Outfit:wght@300;400;600;700;800&family=Permanent+Marker&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                        marker: ['Permanent Marker', 'cursive'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        gold: {
+                            50: '#fffdf0',
+                            100: '#fef9c3',
+                            200: '#fef08a',
+                            300: '#fde047',
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04',
+                            700: '#a16207',
+                            800: '#854d0e',
+                            900: '#713f12',
+                            950: '#422006',
+                        },
+                        romance: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            300: '#fda4af',
+                            400: '#fb7185',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            800: '#9f1239',
+                            900: '#881337',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS for advanced animations and visual styles -->
+    <style>
+        /* Smooth transitions */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Particles container */
+        #particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            bottom: -200px;
+            font-size: 1.5rem;
+            user-select: none;
+            pointer-events: none;
+            opacity: 0.25;
+            will-change: transform, opacity;
+            animation: floatUp 8s linear infinite;
+        }
+
+        .particle-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.15);
+            display: inline-block;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(0.5);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.25;
+            }
+            90% {
+                opacity: 0.25;
+            }
+            100% {
+                transform: translateY(-105vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* Glassmorphism styling */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(251, 191, 36, 0.15);
+        }
+
+        /* Holographic Shiny Figurine Card */
+        .holographic-shine {
+            position: relative;
+            overflow: hidden;
+            border: 4px solid #f59e0b;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.4), inset 0 0 15px rgba(245, 158, 11, 0.2);
+        }
+
+        /* Holographic shine layer overlay */
+        .holographic-shine::after {
+            content: '';
+            position: absolute;
+            top: -150%;
+            left: -150%;
+            width: 400%;
+            height: 400%;
+            background: linear-gradient(
+                115deg,
+                rgba(255, 255, 255, 0) 30%,
+                rgba(245, 158, 11, 0.15) 42%,
+                rgba(255, 255, 255, 0.5) 50%,
+                rgba(244, 63, 94, 0.15) 58%,
+                rgba(255, 255, 255, 0) 70%
+            );
+            transform: rotate(-30deg);
+            animation: hologram 6s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        @keyframes hologram {
+            0% {
+                transform: translate(-30%, -30%) rotate(-35deg);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translate(15%, 15%) rotate(-35deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-30%, -30%) rotate(-35deg);
+                opacity: 0.6;
+            }
+        }
+
+        /* Holographic Border Shimmer effect */
+        .border-shimmer {
+            background: linear-gradient(90deg, #f59e0b, #e11d48, #f59e0b, #e11d48);
+            background-size: 300% 300%;
+            animation: borderShimmerFlow 4s linear infinite;
+        }
+
+        @keyframes borderShimmerFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090d16;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f59e0b;
+        }
+
+        /* Tactica Football Blackboard background styling */
+        .tactical-board {
+            background-color: #1b4d3e;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 80%),
+                linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+            position: relative;
+            border: 8px solid #3e2723; /* wood frame look */
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.6), 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .tactical-board::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            border: 2px dashed rgba(255, 255, 255, 0.25);
+            pointer-events: none;
+            border-radius: 4px;
+        }
+
+        /* Custom glow effects */
+        .glow-gold {
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        }
+        .glow-red {
+            text-shadow: 0 0 10px rgba(244, 63, 94, 0.5);
+        }
+
+        /* Story Mode Styles */
+        body.story-mode-active {
+            background: radial-gradient(circle at 50% 50%, #1a102f 0%, #090514 100%) !important;
+            height: 100vh !important;
+            width: 100vw !important;
+            overflow: hidden !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        body.story-mode-active header,
+        body.story-mode-active #screen-config,
+        body.story-mode-active #sharing-panel,
+        body.story-mode-active #partner-customizer-panel,
+        body.story-mode-active #partner-recommendations,
+        body.story-mode-active #support-center-card,
+        body.story-mode-active #scoreboard-section,
+        body.story-mode-active #tactical-board-section,
+        body.story-mode-active #btn-back-to-config,
+        body.story-mode-active footer,
+        body.story-mode-active #btn-support-dev,
+        body.story-mode-active #particles-container {
+            display: none !important;
+        }
+
+        body.story-mode-active main {
+            padding: 0 !important;
+            margin: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            height: 100% !important;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        body.story-mode-active #screen-album {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            height: 100% !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 20px !important;
+        }
+
+        body.story-mode-active #album-card {
+            max-width: 320px !important;
+            width: 85vw !important;
+            box-shadow: 0 0 35px rgba(245, 158, 11, 0.6), 0 0 70px rgba(244, 63, 94, 0.3) !important;
+            transform: scale(1.05) !important;
+        }
+
+        body.story-mode-active #story-watermark {
+            display: flex !important;
+        }
+
+        body.story-mode-active #btn-exit-story {
+            display: block !important;
+        }
+
+        /* Toast notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 20px rgba(245, 158, 11, 0.15);
+            z-index: 200;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(8px);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .toast-notification.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen relative overflow-x-hidden selection:bg-gold-500 selection:text-slate-950">
+
+    <!-- Container de Partículas Animadas (Corações, Bolas de Futebol, Troféus, Bandeirinhas) -->
+    <div id="particles-container"></div>
+
+    <!-- Efeito de gradiente de fundo sutil -->
+    <div class="fixed top-0 left-0 w-full h-full pointer-events-none z-0">
+        <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-romance-900/10 blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-gold-900/10 blur-[120px]"></div>
+    </div>
+
+    <!-- Header Geral / Marca -->
+    <header class="relative z-20 pt-6 pb-2 text-center">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/80 border border-gold-500/20 backdrop-blur-md mb-3">
+            <span class="text-xs font-semibold tracking-widest text-gold-400 uppercase"><i class="fa-solid fa-trophy mr-1.5 animate-bounce"></i> Copa dos Namorados 2026</span>
+        </div>
+        <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white font-display uppercase">
+            O Casal <span class="bg-gradient-to-r from-gold-400 via-romance-400 to-gold-500 bg-clip-text text-transparent">Campeão</span>
+        </h1>
+        <p class="text-sm text-slate-400 mt-1 font-light tracking-wide">Álbum de Figurinhas do Nosso Amor</p>
+    </header>
+
+    <main class="relative z-20 max-w-4xl mx-auto px-4 py-6 pb-24">
+
+        <!-- ==================== TELA 1: CONFIGURAÇÃO ==================== -->
+        <section id="screen-config" class="fade-in space-y-6">
+            <div class="glass-panel rounded-3xl p-6 md:p-8 shadow-2xl border border-slate-800/80 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-gold-500/5 rounded-full blur-2xl"></div>
+                
+                <h2 class="text-xl md:text-2xl font-bold font-display text-white mb-6 flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 text-sm">
+                        <i class="fa-solid fa-gears"></i>
+                    </span>
+                    Escalação dos Titulares
+                </h2>
+
+                <form id="form-config" class="space-y-6">
+                    <!-- Nomes dos Jogadores -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <label for="player1" class="text-sm font-semibold tracking-wide text-slate-300 block">
+                                <i class="fa-solid fa-shirt text-romance-400 mr-1.5"></i> Jogador 1 (Parceiro 1)
+                            </label>
+                            <input type="text" id="player1" required placeholder="Digite o nome do camisa 10" 
+                                class="w-full bg-slate-900 border border-slate-700 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 rounded-xl px-4 py-3 text-slate-100 placeholder:text-slate-600 outline-none transition-all duration-300">
+                        </div>
+                        <div class="space-y-2">
+                            <label for="player2" class="text-sm font-semibold tracking-wide text-slate-300 block">
+                                <i class="fa-solid fa-shirt text-gold-400 mr-1.5"></i> Jogador 2 (Parceiro 2)
+                            </label>
+                            <input type="text" id="player2" required placeholder="Digite o nome do outro craque" 
+                                class="w-full bg-slate-900 border border-slate-700 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 rounded-xl px-4 py-3 text-slate-100 placeholder:text-slate-600 outline-none transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <!-- Data e Recado do Técnico -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="space-y-2 md:col-span-1">
+                            <label for="romance-date" class="text-sm font-semibold tracking-wide text-slate-300 block">
+                                <i class="fa-regular fa-calendar-star text-gold-400 mr-1.5"></i> Início do Romance
+                            </label>
+                            <input type="date" id="romance-date" required 
+                                class="w-full bg-slate-900 border border-slate-700 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 rounded-xl px-4 py-2.5 text-slate-100 outline-none transition-all duration-300">
+                        </div>
+                        <div class="space-y-2 md:col-span-2">
+                            <label for="coach-message" class="text-sm font-semibold tracking-wide text-slate-300 block">
+                                <i class="fa-solid fa-clipboard-question text-romance-400 mr-1.5"></i> Recado do Técnico
+                            </label>
+                            <textarea id="coach-message" required rows="2" maxlength="160" placeholder="Escreva uma mensagem ou tática romântica (ex: 'O segredo da nossa vitória é o trabalho em equipe')"
+                                class="w-full bg-slate-900 border border-slate-700 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 rounded-xl px-4 py-2 text-slate-100 placeholder:text-slate-600 outline-none transition-all duration-300 resize-none"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Seletor de Fotos (Uploader de Fotos Reais) -->
+                    <div class="space-y-4 pt-2">
+                        <!-- Uploader de Fotos Reais -->
+                        <div id="wrapper-real-photos" class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Fotos da Nossa Trajetória</span>
+                                <span id="photo-counter" class="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-gold-400 font-bold border border-gold-500/20">0 / 5</span>
+                            </div>
+                            
+                            <div class="border-2 border-dashed border-slate-800 hover:border-gold-500/50 rounded-2xl p-6 text-center cursor-pointer transition-all duration-300 relative bg-slate-900/40" id="drop-zone">
+                                <input type="file" id="file-uploader" multiple accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                <i class="fa-solid fa-cloud-arrow-up text-3xl text-gold-500/50 mb-2"></i>
+                                <p class="text-sm font-semibold text-slate-300">Arraste ou clique para selecionar até 5 fotos</p>
+                                <p class="text-xs text-slate-500 mt-1">Imagens serão comprimidas automaticamente e salvas localmente</p>
+                            </div>
+
+                            <!-- Thumbnails Preview Grid -->
+                            <div id="preview-grid" class="grid grid-cols-5 gap-2 pt-2"></div>
+                        </div>
+                    </div>
+
+                    <!-- Enviar -->
+                    <div class="pt-4">
+                        <button type="submit" class="w-full relative group overflow-hidden bg-gradient-to-r from-gold-600 via-amber-500 to-gold-600 hover:from-gold-500 hover:to-amber-400 text-slate-950 font-black tracking-widest text-sm uppercase py-4 px-6 rounded-2xl shadow-xl transition-all duration-500 transform hover:scale-[1.01] hover:shadow-gold-500/20">
+                            <span class="relative z-10 flex items-center justify-center gap-2">
+                                🏆 CONVOCAR SELEÇÃO DO AMOR
+                            </span>
+                            <div class="absolute inset-0 bg-white/20 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300"></div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+
+        <!-- ==================== TELA 2: LANDING PAGE SURPRESA ==================== -->
+        <section id="screen-album" class="hidden fade-in space-y-8">
+            
+            <!-- Exit button for Story Mode (discreto no topo esquerdo) -->
+            <button id="btn-exit-story" class="hidden fixed top-6 left-6 z-[110] bg-black/60 hover:bg-black/80 text-white rounded-full py-1.5 px-3.5 text-xs font-bold transition-all border border-white/20">
+                ✕ Sair
+            </button>
+
+            <!-- Zona de Compartilhamento Inteligente (Apenas para o criador) -->
+            <div id="sharing-panel" class="hidden glass-panel rounded-3xl p-5 border border-gold-500/30 shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-16 h-16 bg-gold-500/10 rounded-full blur-xl"></div>
+                <div class="flex flex-col lg:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-400">
+                            <i class="fa-solid fa-share-nodes text-lg"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Convocação Concluída!</h3>
+                            <p class="text-xs text-slate-400">Compartilhe o link do álbum com o seu parceiro titular.</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row w-full lg:w-auto items-stretch sm:items-center gap-2">
+                        <input type="text" id="share-link-input" readonly 
+                            class="bg-slate-900/80 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-slate-300 select-all outline-none w-full lg:w-64">
+                        <button id="btn-copy-link" class="bg-gold-500 hover:bg-gold-400 text-slate-950 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 flex items-center justify-center gap-1.5 whitespace-nowrap">
+                            <i class="fa-solid fa-copy"></i> Copiar
+                        </button>
+                        <button id="btn-instagram-story" class="bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 hover:opacity-90 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 flex items-center justify-center gap-1.5 whitespace-nowrap shadow-lg shadow-pink-500/20">
+                            📸 Instagram Story
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botão discreto para o parceiro personalizar as fotos reais localmente -->
+            <div id="partner-customizer-panel" class="hidden flex justify-center">
+                <button id="btn-open-partner-modal" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 border border-romance-500/30 hover:border-romance-400 text-xs font-bold text-romance-400 hover:text-romance-300 transition-all duration-300">
+                    <i class="fa-solid fa-camera"></i> Personalizar álbum com nossas fotos locais
+                </button>
+            </div>
+
+            <!-- Bloco de Recomendação de Parceiros (Dicas do Técnico para o Jantar) -->
+            <div id="partner-recommendations" class="glass-panel rounded-3xl p-6 border border-slate-800/80 shadow-xl relative overflow-hidden max-w-2xl mx-auto">
+                <div class="absolute top-0 right-0 w-20 h-20 bg-gold-500/5 rounded-full blur-xl"></div>
+                <h3 class="text-xs font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <span class="text-gold-400 text-sm">🏆</span> Dicas do Técnico para o Jantar do Título
+                </h3>
+                <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                    Toda grande vitória merece uma comemoração de gala. Confira as sugestões especiais do técnico para garantir os 3 pontos na mesa:
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Parceiro/Afiliado 1 -->
+                    <a href="https://example.com/restaurantes" target="_blank" rel="noopener noreferrer" class="group flex flex-col justify-between p-4 rounded-2xl bg-slate-950/80 border border-slate-800/80 hover:border-gold-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-gold-500/5">
+                        <div>
+                            <span class="text-[9px] font-bold tracking-widest text-gold-400 uppercase bg-gold-950/50 px-2 py-0.5 rounded border border-gold-500/20">RESTAURANTE RARA</span>
+                            <h4 class="text-xs font-bold text-white mt-2 mb-1 group-hover:text-gold-400 transition-colors">Reserva Premium: Encontro dos Campeões</h4>
+                            <p class="text-[10px] text-slate-500 leading-snug">Reserve uma mesa no bistrô mais romântico da cidade com desconto exclusivo.</p>
+                        </div>
+                        <span class="inline-flex items-center gap-1.5 text-xs text-gold-400 font-bold mt-4 group-hover:translate-x-1 transition-transform">
+                            Reservar Mesa <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </span>
+                    </a>
+                    <!-- Parceiro/Afiliado 2 -->
+                    <a href="https://example.com/vinho-chocolates" target="_blank" rel="noopener noreferrer" class="group flex flex-col justify-between p-4 rounded-2xl bg-slate-950/80 border border-slate-800/80 hover:border-romance-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-romance-500/5">
+                        <div>
+                            <span class="text-[9px] font-bold tracking-widest text-romance-400 uppercase bg-romance-950/50 px-2 py-0.5 rounded border border-romance-500/20">COMBO ROMÂNTICO</span>
+                            <h4 class="text-xs font-bold text-white mt-2 mb-1 group-hover:text-romance-400 transition-colors">Vinho &amp; Chocolates Selecionados</h4>
+                            <p class="text-[10px] text-slate-500 leading-snug">O acompanhamento perfeito para celebrar o título de Casal Campeão.</p>
+                        </div>
+                        <span class="inline-flex items-center gap-1.5 text-xs text-romance-400 font-bold mt-4 group-hover:translate-x-1 transition-transform">
+                            Comprar Kit <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card de Apoio Central (Apoie o Dev) -->
+            <div id="support-center-card" class="glass-panel rounded-3xl p-6 border border-amber-500/25 shadow-xl relative overflow-hidden max-w-2xl mx-auto text-center mt-6">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-xl"></div>
+                <div class="relative z-10">
+                    <span class="text-2xl mb-2 block animate-bounce">☕</span>
+                    <h3 class="text-sm md:text-base font-bold text-white uppercase tracking-wider mb-2">
+                        Gostou do Álbum dos Campeões?
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-4 max-w-md mx-auto leading-relaxed">
+                        Este projeto é 100% gratuito e sem anúncios invasivos. Se ele ajudou a arrancar um sorriso do seu mozão, que tal apoiar o desenvolvedor pagando um cafezinho para o juiz?
+                    </p>
+                    <button id="btn-support-center" class="bg-gradient-to-r from-gold-500 to-amber-500 hover:from-gold-400 hover:to-amber-400 text-slate-950 px-6 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 transform hover:scale-105 active:scale-95 inline-flex items-center gap-2 shadow-lg shadow-gold-500/10">
+                        <i class="fa-solid fa-mug-hot"></i> Pagar Café pro Juiz (Via Pix)
+                    </button>
+                </div>
+            </div>
+
+            <!-- FIGURINHA RARA / CARD DE DESTAQUE -->
+            <div class="flex justify-center py-2">
+                <div id="album-card" class="holographic-shine rounded-3xl w-full max-w-[350px] aspect-[3/4.2] flex flex-col p-4 bg-slate-900/90 relative z-30 select-none">
+                    
+                    <!-- Top do Card: Badge do Casal e Ano -->
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-[10px] font-black tracking-widest text-gold-400 uppercase bg-gold-950/80 px-2 py-0.5 rounded-full border border-gold-500/30">
+                            CAMPEÕES
+                        </span>
+                        <div class="flex items-center gap-1">
+                            <span class="text-[10px] font-mono text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded border border-slate-700 font-bold">
+                                2026
+                            </span>
+                            <span class="text-[10px] font-black text-rose-500 animate-pulse bg-rose-950/60 px-1.5 py-0.5 rounded border border-rose-500/30">
+                                RARA
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Carrossel de Fotos (Dentro do card) -->
+                    <div class="relative flex-1 w-full bg-slate-950 rounded-2xl overflow-hidden border border-slate-800/80 group">
+                        <!-- Carregando... -->
+                        <div id="card-spinner" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 z-20 transition-opacity duration-500">
+                            <div class="w-10 h-10 border-4 border-gold-500 border-t-transparent rounded-full animate-spin"></div>
+                            <span class="text-xs text-slate-400 mt-3 font-medium">Revelando figurinha rara...</span>
+                        </div>
+
+                        <!-- Slides do Carrossel -->
+                        <div id="carousel-slides" class="absolute inset-0 w-full h-full">
+                            <!-- Slides serão adicionados via JS com classe absolute inset-0 w-full h-full transition-opacity duration-1000 -->
+                        </div>
+
+                        <!-- Efeitos de gradiente e legenda dentro do card -->
+                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent p-4 z-10">
+                            <!-- Nomes do Casal no Rodapé da Imagem -->
+                            <div class="text-center">
+                                <h3 id="card-couple-names" class="text-lg md:text-xl font-black font-display tracking-tight text-white uppercase glow-gold">
+                                    ROMÁRIO &amp; BEBETO
+                                </h3>
+                                <div class="flex items-center justify-center gap-1.5 mt-0.5 text-xs text-rose-400 font-bold uppercase tracking-wider">
+                                    <i class="fa-solid fa-heart animate-pulse"></i>
+                                    <span>Dupla Invicta</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rodapé do Card: Bandeira e Info Adicional -->
+                    <div class="mt-3 flex items-center justify-between text-slate-400 text-[10px]">
+                        <div class="flex items-center gap-1 bg-slate-950/80 px-2 py-1 rounded-lg border border-slate-800">
+                            <span class="text-xs">🇧🇷</span>
+                            <span class="font-bold tracking-wider">BRASIL</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="block font-medium">Copa do Amor</span>
+                            <span class="block font-mono text-gold-400 font-bold text-xs" id="card-score">★ ★ ★ ★ ★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Watermark for Story Mode (só aparece em Story Mode) -->
+            <div id="story-watermark" class="hidden flex-col items-center text-center mt-6 z-50">
+                <p class="text-xs text-slate-400 font-bold tracking-wider">Crie o seu em: <span class="text-gold-400">o-casal-campeao.com.br</span></p>
+                <p class="text-[10px] text-slate-500 mt-1 uppercase tracking-widest font-semibold">🏆 Nosso amor é convocação oficial para a Copa 2026!</p>
+            </div>
+
+            <!-- PLACAR DO AMOR (CRONÔMETRO DO RELACIONAMENTO INVICTO) -->
+            <div id="scoreboard-section" class="space-y-3">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 text-center flex items-center justify-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-ping"></span>
+                    TEMPO DE JOGO (INVICTOS HÁ)
+                </h3>
+                
+                <div class="grid grid-cols-4 gap-2 md:gap-4 max-w-lg mx-auto">
+                    <!-- Dias -->
+                    <div class="glass-panel p-3 md:p-4 rounded-2xl text-center border-b-2 border-b-gold-500 shadow-md">
+                        <span id="scoreboard-days" class="block text-xl md:text-3xl font-black font-mono text-white tracking-tight glow-gold">000</span>
+                        <span class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider">Dias</span>
+                    </div>
+                    <!-- Horas -->
+                    <div class="glass-panel p-3 md:p-4 rounded-2xl text-center border-b-2 border-b-romance-500 shadow-md">
+                        <span id="scoreboard-hours" class="block text-xl md:text-3xl font-black font-mono text-white tracking-tight glow-red">00</span>
+                        <span class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider">Horas</span>
+                    </div>
+                    <!-- Minutos -->
+                    <div class="glass-panel p-3 md:p-4 rounded-2xl text-center border-b-2 border-b-gold-500 shadow-md">
+                        <span id="scoreboard-minutes" class="block text-xl md:text-3xl font-black font-mono text-white tracking-tight glow-gold">00</span>
+                        <span class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider">Minutos</span>
+                    </div>
+                    <!-- Segundos -->
+                    <div class="glass-panel p-3 md:p-4 rounded-2xl text-center border-b-2 border-b-romance-500 shadow-md">
+                        <span id="scoreboard-seconds" class="block text-xl md:text-3xl font-black font-mono text-rose-500 tracking-tight glow-red">00</span>
+                        <span class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider">Segundos</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INSTRUÇÕES DO TÉCNICO (LOUSA TÁTICA) -->
+            <div id="tactical-board-section" class="max-w-2xl mx-auto space-y-3">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 text-center">
+                    <i class="fa-solid fa-chalkboard-user mr-1 text-gold-500"></i> Lousa de Estratégias do Técnico
+                </h3>
+                
+                <div class="tactical-board rounded-3xl p-6 md:p-8 min-h-[220px] flex flex-col justify-between items-center text-center">
+                    <!-- Marcações Táticas de Fundo -->
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+                        <!-- Círculo Central -->
+                        <div class="w-24 h-24 border-2 border-white rounded-full"></div>
+                        <div class="w-1.5 h-1.5 bg-white rounded-full absolute"></div>
+                        <!-- Linha do meio de campo -->
+                        <div class="absolute left-0 w-full h-[2px] bg-white"></div>
+                    </div>
+
+                    <!-- Rabiscos táticos decorativos -->
+                    <div class="absolute top-6 left-6 text-white/40 font-mono text-xs pointer-events-none text-left">
+                        J1 <i class="fa-solid fa-arrow-right-long mx-1"></i> J2<br>
+                        ⚽ ➔ ❤️
+                    </div>
+                    <div class="absolute bottom-6 right-6 text-white/40 font-mono text-xs pointer-events-none text-right">
+                        Amor 4-3-3<br>
+                        Esquema Tático Invencível
+                    </div>
+
+                    <!-- Mensagem do Técnico -->
+                    <div class="relative z-10 my-auto max-w-md">
+                        <i class="fa-solid fa-quote-left text-2xl text-white/30 block mb-2"></i>
+                        <p id="tactical-message" class="font-marker text-white text-lg md:text-2xl tracking-wider leading-relaxed rotate-[-1deg] drop-shadow-lg">
+                            "A gente joga junto e ganha junto. O amor é nossa melhor tática para vencer qualquer campeonato no mundo."
+                        </p>
+                        <i class="fa-solid fa-quote-right text-2xl text-white/30 block mt-2 text-right"></i>
+                    </div>
+
+                    <!-- Coração tático no rodapé -->
+                    <div class="relative z-10 mt-4 flex items-center gap-1.5 text-rose-500 text-lg">
+                        <i class="fa-solid fa-xmark text-white/50 text-sm"></i>
+                        <i class="fa-solid fa-circle text-white/50 text-[6px]"></i>
+                        <i class="fa-solid fa-arrow-pointer text-white/50 text-xs rotate-[135deg]"></i>
+                        <i class="fa-solid fa-heart text-2xl animate-pulse"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botão de Voltar / Nova Escalação -->
+            <div class="flex justify-center pt-4">
+                <button id="btn-back-to-config" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-slate-400 hover:text-white hover:border-slate-700 transition-all duration-300">
+                    <i class="fa-solid fa-chevron-left"></i> Criar Novo Álbum
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Geral -->
+    <footer class="relative z-20 border-t border-slate-900/60 bg-slate-950/80 backdrop-blur-md text-slate-500 text-[10px] md:text-xs py-6 text-center">
+        <!-- Banner de Anúncio / Monetização -->
+        <div class="max-w-4xl mx-auto px-4 mb-4 relative z-20">
+            <div class="glass-panel rounded-2xl p-4 border border-slate-900/40 text-center relative overflow-hidden group hover:border-gold-500/20 transition-all duration-300">
+                <span class="absolute top-1.5 right-2 text-[7px] font-bold tracking-widest text-slate-600 uppercase">Patrocinado</span>
+                <div class="py-4 flex flex-col items-center justify-center border border-dashed border-slate-800 rounded-xl bg-slate-950/40 min-h-[60px]">
+                    <p class="text-[11px] text-slate-400 font-medium tracking-wide">Espaço Reservado para Anúncio / Monetização</p>
+                    <p class="text-[9px] text-slate-600 mt-0.5">Seu banner de monetização aqui (728x90 ou bloco responsivo)</p>
+                </div>
+            </div>
+        </div>
+        <p>© 2026 - Copa do Amor. Feito com ❤️ para todos os casais campeões.</p>
+        <p class="mt-1">Nenhum dado é enviado para servidores. Tudo é processado localmente no seu dispositivo.</p>
+    </footer>
+
+    <!-- Botão Flutuante: Apoie o Dev -->
+    <button id="btn-support-dev" class="fixed bottom-4 right-4 z-40 bg-slate-900/95 border border-gold-500/30 text-white rounded-full py-2 px-3.5 shadow-xl hover:shadow-gold-500/10 flex items-center gap-1.5 text-xs font-bold transition-all duration-300 hover:border-gold-500 hover:scale-105 active:scale-95 group backdrop-blur-md">
+        <span class="text-sm group-hover:animate-bounce">☕</span>
+        <span class="hidden sm:inline">Apoie o Dev (Pague um café pro Juiz)</span>
+        <span class="sm:hidden">Apoie o Dev</span>
+    </button>
+
+    <!-- Modal de Apoio ao Dev (Pix) -->
+    <div id="support-modal" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 hidden backdrop-blur-sm">
+        <div class="glass-panel w-full max-w-sm rounded-3xl p-6 border border-gold-500/20 shadow-2xl relative text-center">
+            <button id="btn-close-support-modal" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="w-12 h-12 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500 text-xl mx-auto mb-3">
+                <i class="fa-solid fa-mug-hot"></i>
+            </div>
+
+            <h3 class="text-base font-bold font-display text-white mb-1 uppercase tracking-wide">
+                ☕ Pague um café pro Juiz!
+            </h3>
+            <p class="text-xs text-slate-400 mb-4 px-2 leading-relaxed">
+                Gostou do álbum? O juiz não aceita suborno, mas aceita um café para continuar apitando bem! Apoie o desenvolvedor via Pix.
+            </p>
+
+            <!-- QR Code Placeholder -->
+            <div class="bg-white p-3 rounded-2xl inline-block mb-4 shadow-inner">
+                <img id="pix-qr-img" class="w-32 h-32" src="" alt="QR Code Pix">
+            </div>
+
+            <!-- Pix Key -->
+            <div class="space-y-2.5">
+                <div class="flex items-center gap-2">
+                    <input type="text" id="pix-key-input" readonly value=""
+                        class="bg-slate-900/80 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-slate-300 select-all outline-none w-full text-center">
+                </div>
+                <button id="btn-copy-pix" class="w-full bg-gold-500 hover:bg-gold-400 text-slate-950 font-bold text-xs uppercase py-2.5 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-copy"></i> Copiar Chave Pix
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast de Notificação do Story Mode -->
+    <div id="story-toast" class="toast-notification">
+        <i class="fa-solid fa-camera text-gold-400"></i>
+        <span>Tire o print agora, poste no Story e marque o mozão! 🇧🇷❤️</span>
+    </div>
+
+    <!-- ==================== MODAL DE PERSONALIZAÇÃO PARA O PARCEIRO ==================== -->
+    <div id="partner-modal" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 hidden backdrop-blur-sm">
+        <div class="glass-panel w-full max-w-md rounded-3xl p-6 border border-gold-500/20 shadow-2xl relative">
+            <button id="btn-close-partner-modal" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <h3 class="text-lg font-bold font-display text-white mb-2 flex items-center gap-2 uppercase">
+                <i class="fa-solid fa-camera text-gold-400"></i> Nossas Fotos Reais
+            </h3>
+            <p class="text-xs text-slate-400 mb-4">Escolha até 5 fotos românticas de vocês dois para carregar localmente no seu celular.</p>
+
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Suas Fotos</span>
+                    <span id="partner-photo-counter" class="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-gold-400 font-bold border border-gold-500/20">0 / 5</span>
+                </div>
+                
+                <div class="border-2 border-dashed border-slate-800 hover:border-gold-500/50 rounded-2xl p-6 text-center cursor-pointer transition-all duration-300 relative bg-slate-900/40" id="partner-drop-zone">
+                    <input type="file" id="partner-file-uploader" multiple accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                    <i class="fa-solid fa-cloud-arrow-up text-2xl text-gold-500/50 mb-2"></i>
+                    <p class="text-xs font-semibold text-slate-300">Selecione até 5 fotos do seu celular</p>
+                </div>
+
+                <div id="partner-preview-grid" class="grid grid-cols-5 gap-2 pt-2"></div>
+
+                <button id="btn-save-partner-photos" class="w-full bg-gold-500 hover:bg-gold-400 text-slate-950 font-bold text-xs uppercase py-3 rounded-xl shadow-lg transition-all duration-300 mt-2">
+                    Salvar e Atualizar Álbum
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== LÓGICA JAVASCRIPT ==================== -->
+    <script>
+        // --- CONSTANTES E SELETORES ---
+        let currentPhotos = [];
+        let romanceInterval = null;
+        let carouselInterval = null;
+        let currentCarouselIndex = 0;
+
+        const screenConfig = document.getElementById('screen-config');
+        const screenAlbum = document.getElementById('screen-album');
+        const formConfig = document.getElementById('form-config');
+        
+        // Uploader
+        const fileUploader = document.getElementById('file-uploader');
+        const previewGrid = document.getElementById('preview-grid');
+        const photoCounter = document.getElementById('photo-counter');
+
+        // Placar / Elementos do Card
+        const scoreboardDays = document.getElementById('scoreboard-days');
+        const scoreboardHours = document.getElementById('scoreboard-hours');
+        const scoreboardMinutes = document.getElementById('scoreboard-minutes');
+        const scoreboardSeconds = document.getElementById('scoreboard-seconds');
+        
+        const cardCoupleNames = document.getElementById('card-couple-names');
+        const tacticalMessage = document.getElementById('tactical-message');
+        const carouselSlides = document.getElementById('carousel-slides');
+        const cardSpinner = document.getElementById('card-spinner');
+
+        // Compartilhamento
+        const sharingPanel = document.getElementById('sharing-panel');
+        const shareLinkInput = document.getElementById('share-link-input');
+        const btnCopyLink = document.getElementById('btn-copy-link');
+        const btnBackToConfig = document.getElementById('btn-back-to-config');
+
+        // Parceiro Local Customizer
+        const partnerCustomizerPanel = document.getElementById('partner-customizer-panel');
+        const partnerModal = document.getElementById('partner-modal');
+        const btnOpenPartnerModal = document.getElementById('btn-open-partner-modal');
+        const btnClosePartnerModal = document.getElementById('btn-close-partner-modal');
+        const partnerFileUploader = document.getElementById('partner-file-uploader');
+        const partnerPreviewGrid = document.getElementById('partner-preview-grid');
+        const partnerPhotoCounter = document.getElementById('partner-photo-counter');
+        const btnSavePartnerPhotos = document.getElementById('btn-save-partner-photos');
+
+        // Apoio ao Dev
+        const btnSupportDev = document.getElementById('btn-support-dev');
+        const btnSupportCenter = document.getElementById('btn-support-center');
+        const supportModal = document.getElementById('support-modal');
+        const btnCloseSupportModal = document.getElementById('btn-close-support-modal');
+        const pixKeyInput = document.getElementById('pix-key-input');
+        const btnCopyPix = document.getElementById('btn-copy-pix');
+
+        // Story Mode
+        const btnInstagramStory = document.getElementById('btn-instagram-story');
+        const btnExitStory = document.getElementById('btn-exit-story');
+        const storyToast = document.getElementById('story-toast');
+
+        let partnerPhotos = [];
+
+        // Imagens default (Unsplash elegantes de casal/estádios/romance)
+        const placeholderImages = [
+            'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=600&q=80', // Casal sorrindo
+            'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80', // Abraço
+            'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80', // Estádio / Esportes vibe
+            'https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?auto=format&fit=crop&w=600&q=80', // Celebração de vitória
+            'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=600&q=80'  // Casal de mãos dadas
+        ];
+
+
+        // --- PARTÍCULAS DE FUNDO ---
+        const particleEmojis = ['❤️', '⚽', '🏆', '🇧🇷', '💖', '✨'];
+
+        function getAvailablePhotos() {
+            let photos = [];
+            if (currentPhotos && currentPhotos.length > 0) {
+                photos = photos.concat(currentPhotos);
+            }
+            if (partnerPhotos && partnerPhotos.length > 0) {
+                photos = photos.concat(partnerPhotos);
+            }
+            try {
+                const saved = localStorage.getItem('casal_campeao_photos');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed && parsed.length > 0) {
+                        photos = photos.concat(parsed);
+                    }
+                }
+            } catch (e) {}
+            
+            if (photos.length === 0) {
+                photos = placeholderImages;
+            }
+            return photos;
+        }
+
+        function createParticle() {
+            const container = document.getElementById('particles-container');
+            if (!container) return;
+
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // 50% de chance de ser emoji, 50% de ser imagem do casal
+            const isImage = Math.random() > 0.5;
+            
+            if (isImage) {
+                const photos = getAvailablePhotos();
+                const randomPhoto = photos[Math.floor(Math.random() * photos.length)];
+                
+                const img = document.createElement('img');
+                img.src = randomPhoto;
+                img.classList.add('particle-img');
+                particle.appendChild(img);
+            } else {
+                particle.innerText = particleEmojis[Math.floor(Math.random() * particleEmojis.length)];
+            }
+            
+            // Posição horizontal aleatória
+            particle.style.left = Math.random() * 100 + 'vw';
+            
+            // Tamanho e duração aleatórios
+            const scale = Math.random() * 0.6 + 0.4;
+            const duration = Math.random() * 6 + 5; // Entre 5 e 11 segundos
+            
+            particle.style.transform = `scale(${scale})`;
+            particle.style.animationDuration = duration + 's';
+            
+            container.appendChild(particle);
+            
+            // Remove a partícula ao fim da animação
+            setTimeout(() => {
+                particle.remove();
+            }, duration * 1000);
+        }
+
+        // Inicia a chuva de partículas
+        setInterval(createParticle, 400);
+
+
+        // --- MANIPULAÇÃO DE IMAGENS (COMPRESSÃO BASE64) ---
+        function compressAndStoreImage(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function (event) {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = function () {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+
+                        // Configura dimensões máximas (ex: 600px de largura/altura)
+                        const MAX_WIDTH = 600;
+                        const MAX_HEIGHT = 600;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > MAX_WIDTH) {
+                                height *= MAX_WIDTH / width;
+                                width = MAX_WIDTH;
+                            }
+                        } else {
+                            if (height > MAX_HEIGHT) {
+                                width *= MAX_HEIGHT / height;
+                                height = MAX_HEIGHT;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Comprime para formato JPEG com qualidade 0.7 (reduz drasticamente o tamanho do Base64)
+                        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                        resolve(compressedBase64);
+                    };
+                };
+                reader.onerror = (error) => reject(error);
+            });
+        }
+
+        // Gerencia Uploader Principal (Configuração)
+        async function handleImageUpload(e) {
+            const files = Array.from(e.target.files);
+            const slotsAvailable = 5 - currentPhotos.length;
+            
+            if (slotsAvailable <= 0) {
+                alert('Você já selecionou o limite máximo de 5 fotos.');
+                return;
+            }
+
+            const filesToProcess = files.slice(0, slotsAvailable);
+
+            for (let file of filesToProcess) {
+                try {
+                    const base64 = await compressAndStoreImage(file);
+                    currentPhotos.push(base64);
+                } catch (err) {
+                    console.error('Erro ao processar imagem:', err);
+                }
+            }
+
+            updatePhotoPreviews();
+        }
+
+        function updatePhotoPreviews() {
+            previewGrid.innerHTML = '';
+            currentPhotos.forEach((photo, idx) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'relative aspect-square rounded-xl overflow-hidden border border-slate-700 group';
+                
+                wrapper.innerHTML = `
+                    <img src="${photo}" class="w-full h-full object-cover">
+                    <button type="button" class="absolute top-1 right-1 bg-red-600/90 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] hover:bg-red-500 transition-colors" onclick="removePhoto(${idx})">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                `;
+                previewGrid.appendChild(wrapper);
+            });
+            photoCounter.innerText = `${currentPhotos.length} / 5`;
+        }
+
+        // Chamado globalmente via onclick
+        window.removePhoto = function(index) {
+            currentPhotos.splice(index, 1);
+            updatePhotoPreviews();
+        };
+
+
+        // Gerencia Uploader do Parceiro
+        async function handlePartnerImageUpload(e) {
+            const files = Array.from(e.target.files);
+            const slotsAvailable = 5 - partnerPhotos.length;
+            
+            if (slotsAvailable <= 0) {
+                alert('Você já selecionou o limite máximo de 5 fotos.');
+                return;
+            }
+
+            const filesToProcess = files.slice(0, slotsAvailable);
+
+            for (let file of filesToProcess) {
+                try {
+                    const base64 = await compressAndStoreImage(file);
+                    partnerPhotos.push(base64);
+                } catch (err) {
+                    console.error('Erro ao processar imagem do parceiro:', err);
+                }
+            }
+
+            updatePartnerPhotoPreviews();
+        }
+
+        function updatePartnerPhotoPreviews() {
+            partnerPreviewGrid.innerHTML = '';
+            partnerPhotos.forEach((photo, idx) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'relative aspect-square rounded-xl overflow-hidden border border-slate-700';
+                
+                wrapper.innerHTML = `
+                    <img src="${photo}" class="w-full h-full object-cover">
+                    <button type="button" class="absolute top-1 right-1 bg-red-600/90 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] hover:bg-red-500 transition-colors" onclick="removePartnerPhoto(${idx})">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                `;
+                partnerPreviewGrid.appendChild(wrapper);
+            });
+            partnerPhotoCounter.innerText = `${partnerPhotos.length} / 5`;
+        }
+
+        window.removePartnerPhoto = function(index) {
+            partnerPhotos.splice(index, 1);
+            updatePartnerPhotoPreviews();
+        };
+
+
+        fileUploader.addEventListener('change', handleImageUpload);
+        partnerFileUploader.addEventListener('change', handlePartnerImageUpload);
+
+
+        // --- CRONÔMETRO DO PLACAR DO AMOR ---
+        function startRomanceClock(startDateStr) {
+            if (romanceInterval) clearInterval(romanceInterval);
+            
+            const startDate = new Date(startDateStr + 'T00:00:00');
+
+            function updateClock() {
+                const now = new Date();
+                const diffMs = now - startDate;
+
+                if (diffMs < 0) {
+                    scoreboardDays.innerText = '00';
+                    scoreboardHours.innerText = '00';
+                    scoreboardMinutes.innerText = '00';
+                    scoreboardSeconds.innerText = '00';
+                    return;
+                }
+
+                // Cálculo preciso
+                const totalSeconds = Math.floor(diffMs / 1000);
+                const days = Math.floor(totalSeconds / (3600 * 24));
+                const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+
+                scoreboardDays.innerText = String(days).padStart(2, '0');
+                scoreboardHours.innerText = String(hours).padStart(2, '0');
+                scoreboardMinutes.innerText = String(minutes).padStart(2, '0');
+                scoreboardSeconds.innerText = String(seconds).padStart(2, '0');
+            }
+
+            updateClock();
+            romanceInterval = setInterval(updateClock, 1000);
+        }
+
+
+        // --- CARROSSEL ---
+        function setupCarousel(images) {
+            if (carouselInterval) clearInterval(carouselInterval);
+            carouselSlides.innerHTML = '';
+            
+            if (!images || images.length === 0) {
+                images = placeholderImages;
+            }
+
+            images.forEach((imgSrc, idx) => {
+                const slide = document.createElement('div');
+                slide.className = `absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${idx === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0'}`;
+                
+                const img = document.createElement('img');
+                img.src = imgSrc;
+                img.className = 'w-full h-full object-cover';
+                img.alt = 'Figurinha Rara';
+                
+                // Hide spinner once first image loads
+                if (idx === 0) {
+                    img.onload = () => {
+                        cardSpinner.classList.add('opacity-0');
+                        setTimeout(() => cardSpinner.classList.add('hidden'), 500);
+                    };
+                }
+
+                slide.appendChild(img);
+                carouselSlides.appendChild(slide);
+            });
+
+            currentCarouselIndex = 0;
+            const slides = carouselSlides.children;
+
+            if (slides.length > 1) {
+                carouselInterval = setInterval(() => {
+                    slides[currentCarouselIndex].classList.replace('opacity-100', 'opacity-0');
+                    slides[currentCarouselIndex].classList.replace('z-10', 'z-0');
+                    
+                    currentCarouselIndex = (currentCarouselIndex + 1) % slides.length;
+                    
+                    slides[currentCarouselIndex].classList.replace('opacity-0', 'opacity-100');
+                    slides[currentCarouselIndex].classList.replace('z-0', 'z-10');
+                }, 3500);
+            } else if (slides.length === 1) {
+                // Se só tem 1 foto, remove spinner
+                const singleImg = slides[0].querySelector('img');
+                if (singleImg.complete) {
+                    cardSpinner.classList.add('opacity-0');
+                    setTimeout(() => cardSpinner.classList.add('hidden'), 500);
+                } else {
+                    singleImg.onload = () => {
+                        cardSpinner.classList.add('opacity-0');
+                        setTimeout(() => cardSpinner.classList.add('hidden'), 500);
+                    };
+                }
+            }
+        }
+
+
+        // --- CARREGAR DADOS NA TELA 2 (ÁLBUM) ---
+        function loadAlbumScreen(data) {
+            // Nomes no Card
+            cardCoupleNames.innerHTML = `${data.p1} <span class="text-romance-500 font-sans">&amp;</span> ${data.p2}`;
+            
+            // Mensagem do Técnico
+            tacticalMessage.innerText = `"${data.msg}"`;
+            
+            // Relacionamento Invicto
+            startRomanceClock(data.date);
+
+            // Carrossel
+            cardSpinner.classList.remove('hidden', 'opacity-0');
+            
+            // Fotos Reais do LocalStorage
+            const saved = localStorage.getItem('casal_campeao_photos');
+            if (saved) {
+                try {
+                    const list = JSON.parse(saved);
+                    if (list && list.length > 0) {
+                        setupCarousel(list);
+                        partnerCustomizerPanel.classList.add('hidden');
+                    } else {
+                        // LocalStorage vazio (outro aparelho de parceiro)
+                        setupCarousel(placeholderImages);
+                        partnerCustomizerPanel.classList.remove('hidden');
+                    }
+                } catch(e) {
+                    setupCarousel(placeholderImages);
+                    partnerCustomizerPanel.classList.remove('hidden');
+                }
+            } else {
+                // Sem fotos no localStorage (outro dispositivo)
+                setupCarousel(placeholderImages);
+                partnerCustomizerPanel.classList.remove('hidden');
+            }
+
+            // Exibe a Tela 2 e oculta a 1
+            screenConfig.classList.add('hidden');
+            screenAlbum.classList.remove('hidden');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+
+        // --- ENVIO DO FORMULÁRIO (CRIAR ÁLBUM) ---
+        formConfig.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const p1 = document.getElementById('player1').value.trim();
+            const p2 = document.getElementById('player2').value.trim();
+            const date = document.getElementById('romance-date').value;
+            const msg = document.getElementById('coach-message').value.trim();
+
+            // Salva fotos no localStorage
+            if (currentPhotos.length > 0) {
+                localStorage.setItem('casal_campeao_photos', JSON.stringify(currentPhotos));
+            } else {
+                localStorage.removeItem('casal_campeao_photos');
+            }
+
+            // Cria os Query Params
+            const params = new URLSearchParams();
+            params.set('p1', p1);
+            params.set('p2', p2);
+            params.set('date', date);
+            params.set('msg', msg);
+            params.set('mode', 'real');
+
+            // Adiciona criador = true para mostrar a caixa de link compartilhável no próprio criador
+            params.set('creator', 'true');
+
+            // Atualiza URL no navegador sem recarregar
+            const newUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+
+            // Carrega Tela 2
+            loadAlbumScreen({
+                p1, p2, date, msg,
+                mode: 'real',
+                creator: 'true'
+            });
+
+            // Mostra painel de compartilhamento
+            sharingPanel.classList.remove('hidden');
+            
+            // Link de compartilhamento limpo (sem &creator=true)
+            params.delete('creator');
+            const cleanShareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+            shareLinkInput.value = cleanShareUrl;
+        });
+
+
+        // --- CONFIGURAÇÃO DE COMPARTILHAMENTO ---
+        btnCopyLink.addEventListener('click', () => {
+            shareLinkInput.select();
+            shareLinkInput.setSelectionRange(0, 99999); // Para mobile
+
+            navigator.clipboard.writeText(shareLinkInput.value).then(() => {
+                btnCopyLink.innerHTML = `<i class="fa-solid fa-check"></i> Copiado!`;
+                btnCopyLink.className = "bg-green-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 flex items-center gap-1.5 whitespace-nowrap";
+                
+                setTimeout(() => {
+                    btnCopyLink.innerHTML = `<i class="fa-solid fa-copy"></i> Copiar`;
+                    btnCopyLink.className = "bg-gold-500 hover:bg-gold-400 text-slate-950 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 flex items-center gap-1.5 whitespace-nowrap";
+                }, 2000);
+            }).catch(err => {
+                console.error('Falha ao copiar link:', err);
+            });
+        });
+
+        // Voltar para a Configuração
+        btnBackToConfig.addEventListener('click', () => {
+            // Limpa query params
+            window.history.pushState({}, '', window.location.origin + window.location.pathname);
+            
+            // Limpa form e estado
+            formConfig.reset();
+            currentPhotos = [];
+            updatePhotoPreviews();
+            
+            if (romanceInterval) clearInterval(romanceInterval);
+            if (carouselInterval) clearInterval(carouselInterval);
+
+            sharingPanel.classList.add('hidden');
+            screenAlbum.classList.add('hidden');
+            screenConfig.classList.remove('hidden');
+        });
+
+
+        // --- MODAL DO PARCEIRO ---
+        btnOpenPartnerModal.addEventListener('click', () => {
+            partnerPhotos = [];
+            updatePartnerPhotoPreviews();
+            partnerModal.classList.remove('hidden');
+        });
+
+        btnClosePartnerModal.addEventListener('click', () => {
+            partnerModal.classList.add('hidden');
+        });
+
+        // Salvar fotos reais do parceiro
+        btnSavePartnerPhotos.addEventListener('click', () => {
+            if (partnerPhotos.length === 0) {
+                alert('Por favor, selecione pelo menos uma imagem.');
+                return;
+            }
+
+            localStorage.setItem('casal_campeao_photos', JSON.stringify(partnerPhotos));
+            partnerModal.classList.add('hidden');
+            partnerCustomizerPanel.classList.add('hidden');
+
+            // Recarrega o carrossel com as fotos salvas
+            cardSpinner.classList.remove('hidden', 'opacity-0');
+            setupCarousel(partnerPhotos);
+        });
+
+
+        // --- MODAL DE APOIO AO DEV (PIX) ---
+        function generatePixPayload(key) {
+            function getCRC16(data) {
+                let crc = 0xFFFF;
+                for (let i = 0; i < data.length; i++) {
+                    let code = data.charCodeAt(i);
+                    crc ^= (code << 8);
+                    for (let j = 0; j < 8; j++) {
+                        if ((crc & 0x8000) !== 0) {
+                            crc = (crc << 1) ^ 0x1021;
+                        } else {
+                            crc = crc << 1;
+                        }
+                    }
+                }
+                let hex = (crc & 0xFFFF).toString(16).toUpperCase();
+                return hex.padStart(4, '0');
+            }
+
+            const pFI = "000201";
+            const pIM = "010211";
+            const gui = "0014br.gov.bcb.pix";
+            const keyField = "01" + String(key.length).padStart(2, '0') + key;
+            const merchantAccount = "26" + String(gui.length + keyField.length).padStart(2, '0') + gui + keyField;
+            const mCC = "52040000";
+            const tC = "5303986";
+            const name = "Suporte Ao Dev";
+            const mN = "59" + String(name.length).padStart(2, '0') + name;
+            const city = "Sao Paulo";
+            const mC = "60" + String(city.length).padStart(2, '0') + city;
+            const aD = "62070503***";
+            
+            const payloadWithoutCRC = pFI + pIM + merchantAccount + mCC + tC + "5802BR" + mN + mC + aD + "6304";
+            const crc = getCRC16(payloadWithoutCRC);
+            return payloadWithoutCRC + crc;
+        }
+
+        function openPixModal() {
+            const key = "60ff60e1-72e5-4036-a4ee-30022e619f94";
+            const payload = generatePixPayload(key);
+            
+            pixKeyInput.value = payload;
+            document.getElementById('pix-qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(payload)}`;
+            
+            supportModal.classList.remove('hidden');
+        }
+
+        btnSupportDev.addEventListener('click', openPixModal);
+        if (btnSupportCenter) {
+            btnSupportCenter.addEventListener('click', openPixModal);
+        }
+
+        btnCloseSupportModal.addEventListener('click', () => {
+            supportModal.classList.add('hidden');
+        });
+
+        btnCopyPix.addEventListener('click', () => {
+            pixKeyInput.select();
+            pixKeyInput.setSelectionRange(0, 99999);
+
+            navigator.clipboard.writeText(pixKeyInput.value).then(() => {
+                btnCopyPix.innerHTML = `<i class="fa-solid fa-check"></i> Copiado!`;
+                btnCopyPix.className = "w-full bg-green-600 text-white font-bold text-xs uppercase py-2.5 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center gap-1.5";
+                
+                setTimeout(() => {
+                    btnCopyPix.innerHTML = `<i class="fa-solid fa-copy"></i> Copiar Código Pix`;
+                    btnCopyPix.className = "w-full bg-gold-500 hover:bg-gold-400 text-slate-950 font-bold text-xs uppercase py-2.5 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center gap-1.5";
+                }, 2000);
+            }).catch(err => {
+                console.error('Falha ao copiar chave pix:', err);
+            });
+        });
+
+
+        // --- MODO STORIES (FOCADO EM PRINT) ---
+        let toastTimeout = null;
+
+        if (btnInstagramStory) {
+            btnInstagramStory.addEventListener('click', () => {
+                document.body.classList.add('story-mode-active');
+                
+                // Show toast
+                storyToast.classList.add('show');
+                if (toastTimeout) clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => {
+                    storyToast.classList.remove('show');
+                }, 3000);
+            });
+        }
+
+        if (btnExitStory) {
+            btnExitStory.addEventListener('click', () => {
+                document.body.classList.remove('story-mode-active');
+                storyToast.classList.remove('show');
+                if (toastTimeout) clearTimeout(toastTimeout);
+            });
+        }
+
+
+        // --- INICIALIZAÇÃO E CHECAGEM DE QUERY PARAMS ---
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const p1 = params.get('p1');
+            const p2 = params.get('p2');
+            const date = params.get('date');
+            const msg = params.get('msg');
+            const creator = params.get('creator');
+
+            if (p1 && p2 && date && msg) {
+                // Carrega diretamente a surpresa
+                loadAlbumScreen({
+                    p1, p2, date, msg, mode: 'real'
+                });
+
+                if (creator === 'true') {
+                    sharingPanel.classList.remove('hidden');
+                    
+                    // Link de compartilhamento limpo (sem &creator=true)
+                    const cleanParams = new URLSearchParams(window.location.search);
+                    cleanParams.delete('creator');
+                    const cleanShareUrl = `${window.location.origin}${window.location.pathname}?${cleanParams.toString()}`;
+                    shareLinkInput.value = cleanShareUrl;
+                } else {
+                    sharingPanel.classList.add('hidden');
+                }
+            } else {
+                // Exibe a tela de configuração
+                screenConfig.classList.remove('hidden');
+                screenAlbum.classList.add('hidden');
+            }
+        });
+
+    </script>
+</body>
+</html>
