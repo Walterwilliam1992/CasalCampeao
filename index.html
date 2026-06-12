@@ -1077,13 +1077,33 @@
             return uploadedUrls;
         }
 
-        function getAlbumPhotosKey() {
-            const hash = window.location.hash;
-            if (hash && hash.startsWith('#/')) {
-                const slug = hash.replace('#/', '');
-                return `casal_campeao_photos_${slug}`;
+        function serializeState(p1, p2, date, msg, imgUrls = []) {
+            const data = { p1, p2, date, msg, imgs: imgUrls };
+            const jsonStr = JSON.stringify(data);
+            const base64 = btoa(encodeURIComponent(jsonStr));
+            const slug = `${slugify(p1)}-e-${slugify(p2)}`;
+            return `#/${slug}?c=${base64}`;
+        }
+
+        function deserializeState(hash) {
+            try {
+                if (!hash || !hash.includes('?c=')) return null;
+                const base64 = hash.split('?c=')[1].split('&')[0];
+                const jsonStr = decodeURIComponent(atob(base64));
+                return JSON.parse(jsonStr);
+            } catch (e) {
+                console.error("Erro ao decodificar URL:", e);
+                return null;
             }
-            return 'casal_campeao_photos';
+        }
+
+        function getAlbumPhotosKey() {
+            let cVal = '';
+            const hash = window.location.hash;
+            if (hash && hash.includes('?c=')) {
+                cVal = hash.split('?c=')[1].split('&')[0];
+            }
+            return cVal ? `casal_campeao_photos_${cVal}` : 'casal_campeao_photos';
         }
 
         let currentPhotos = [];
@@ -1654,8 +1674,9 @@
                 <i class="fa-solid fa-spinner animate-spin animate-duration-1000"></i> CONVOCANDO SELEÇÃO...
             </span>`;
 
-            // Gerar o slug amigável
+            // Gerar o slug amigável e rota compactada
             const slug = `${slugify(p1)}-e-${slugify(p2)}`;
+            const route = serializeState(p1, p2, date, msg, cloudUrls);
 
             // Objeto JSON com todos os dados estruturados do casal
             const albumData = {
@@ -1666,16 +1687,16 @@
                 imgs: cloudUrls
             };
 
-            // Salva esse objeto JSON completo diretamente no localStorage
+            // Salva esse objeto JSON completo diretamente no localStorage (fallback local)
             localStorage.setItem(`casal_campeao_${slug}`, JSON.stringify(albumData));
 
-            // Link curto e limpo com a Hash
-            const prettyShareUrl = `${window.location.origin}${window.location.pathname}#/${slug}`;
+            // Link completo com Hash slug e dados compactados
+            const fullShareUrl = `${window.location.origin}${window.location.pathname}${route}`;
             
-            shareLinkInput.value = prettyShareUrl;
+            shareLinkInput.value = fullShareUrl;
 
             // Atualiza a barra de endereços do criador
-            window.history.pushState({ path: prettyShareUrl }, '', prettyShareUrl);
+            window.history.pushState({ path: fullShareUrl }, '', fullShareUrl);
 
             // Flag temporária de criador
             sessionStorage.setItem('is_creator', 'true');
@@ -1882,43 +1903,55 @@
         // --- INICIALIZAÇÃO E CHECAGEM DE QUERY PARAMS OU HASH ---
         window.addEventListener('DOMContentLoaded', () => {
             const hash = window.location.hash;
+            let data = null;
+            let slug = '';
             
             if (hash && hash.startsWith('#/')) {
-                const slug = hash.replace('#/', '');
-                const savedData = localStorage.getItem(`casal_campeao_${slug}`);
+                // 1. Tenta obter dados a partir do parâmetro compactado ?c= na hash
+                data = deserializeState(hash);
                 
-                if (savedData) {
-                    try {
-                        const data = JSON.parse(savedData);
-                        
-                        // Determina se exibe ou não o sharingPanel com base na flag is_creator
-                        const isCreator = sessionStorage.getItem('is_creator') === 'true';
-                        
-                        // Carrega diretamente a surpresa
-                        loadAlbumScreen(data);
-                        
-                        if (isCreator) {
-                            sharingPanel.classList.remove('hidden');
-                            shareLinkInput.value = `${window.location.origin}${window.location.pathname}#/${slug}`;
-                        } else {
-                            sharingPanel.classList.add('hidden');
-                            // Se não for criador, exibe o partnerCustomizerPanel se a lista de imagens estiver vazia
-                            if (!data.imgs || data.imgs.length === 0) {
-                                partnerCustomizerPanel.classList.remove('hidden');
-                            } else {
-                                partnerCustomizerPanel.classList.add('hidden');
-                            }
+                // Extrai o slug da hash
+                const hashPath = hash.split('?')[0];
+                slug = hashPath.replace('#/', '');
+                
+                // 2. Fallback para localStorage local caso não tenha o parâmetro ?c=
+                if (!data && slug) {
+                    const savedData = localStorage.getItem(`casal_campeao_${slug}`);
+                    if (savedData) {
+                        try {
+                            data = JSON.parse(savedData);
+                        } catch (e) {
+                            console.error("Erro ao ler fallback do localStorage:", e);
                         }
-                        return; // Finaliza com sucesso
-                    } catch (e) {
-                        console.error("Erro ao processar dados do localStorage para o slug:", e);
                     }
                 }
             }
-            
-            // Se o link for aberto sem nenhuma hash válida, garanta que a aplicação exiba a configuração inicial
-            screenConfig.classList.remove('hidden');
-            screenAlbum.classList.add('hidden');
+
+            if (data) {
+                // Determina se exibe ou não o sharingPanel com base na flag is_creator
+                const isCreator = sessionStorage.getItem('is_creator') === 'true';
+                
+                // Carrega diretamente o álbum
+                loadAlbumScreen(data);
+                
+                if (isCreator) {
+                    sharingPanel.classList.remove('hidden');
+                    const route = serializeState(data.p1, data.p2, data.date, data.msg, data.imgs || []);
+                    shareLinkInput.value = `${window.location.origin}${window.location.pathname}${route}`;
+                } else {
+                    sharingPanel.classList.add('hidden');
+                    // Se não for criador, exibe o partnerCustomizerPanel se a lista de imagens estiver vazia
+                    if (!data.imgs || data.imgs.length === 0) {
+                        partnerCustomizerPanel.classList.remove('hidden');
+                    } else {
+                        partnerCustomizerPanel.classList.add('hidden');
+                    }
+                }
+            } else {
+                // Se o link for aberto sem dados válidos, exibe a configuração inicial
+                screenConfig.classList.remove('hidden');
+                screenAlbum.classList.add('hidden');
+            }
         });
 
     </script>
