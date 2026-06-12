@@ -1077,55 +1077,13 @@
             return uploadedUrls;
         }
 
-        function serializeState(p1, p2, date, msg, imgUrls = []) {
-            const data = { p1, p2, date, msg, imgs: imgUrls };
-            const jsonStr = JSON.stringify(data);
-            const base64 = btoa(encodeURIComponent(jsonStr).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-                return String.fromCharCode('0x' + p1);
-            }));
-            const slug = `${slugify(p1)}-e-${slugify(p2)}`;
-            return `#/${slug}?c=${base64}`;
-        }
-
-        function deserializeState(hash) {
-            try {
-                if (!hash || !hash.includes('?c=')) return null;
-                const base64 = hash.split('?c=')[1];
-                const jsonStr = decodeURIComponent(atob(base64).split('').map(function(c) {
-                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                }).join(''));
-                return JSON.parse(jsonStr);
-            } catch (e) {
-                console.error("Erro ao decodificar URL:", e);
-                return null;
-            }
-        }
-
-        function getAlbumPhotosKey(customCVal) {
-            if (customCVal) {
-                return `casal_campeao_photos_${customCVal}`;
-            }
-            let cVal = '';
+        function getAlbumPhotosKey() {
             const hash = window.location.hash;
-            if (hash && hash.includes('?c=')) {
-                const parts = hash.split('?c=')[1];
-                if (parts) {
-                    cVal = parts.split('&')[0];
-                }
-            } else {
-                const params = new URLSearchParams(window.location.search);
-                const p1 = params.get('p1') || '';
-                const p2 = params.get('p2') || '';
-                const date = params.get('date') || '';
-                const msg = params.get('msg') || '';
-                if (p1 || p2) {
-                    const data = { p1, p2, date, msg };
-                    try {
-                        cVal = btoa(encodeURIComponent(JSON.stringify(data)));
-                    } catch(e) {}
-                }
+            if (hash && hash.startsWith('#/')) {
+                const slug = hash.replace('#/', '');
+                return `casal_campeao_photos_${slug}`;
             }
-            return cVal ? `casal_campeao_photos_${cVal}` : 'casal_campeao_photos';
+            return 'casal_campeao_photos';
         }
 
         let currentPhotos = [];
@@ -1696,49 +1654,43 @@
                 <i class="fa-solid fa-spinner animate-spin animate-duration-1000"></i> CONVOCANDO SELEÇÃO...
             </span>`;
 
-            // Cria o link personalizado com a hash (incluindo as URLs das fotos na nuvem!)
-            const route = serializeState(p1, p2, date, msg, cloudUrls);
-            let cVal = '';
-            if (route.includes('?c=')) {
-                cVal = route.split('?c=')[1].split('&')[0];
-            }
-            const storageKey = getAlbumPhotosKey(cVal);
-
-            // Salva também no localStorage local (como cache rápido/fallback)
-            if (currentPhotos.length > 0) {
-                localStorage.setItem(storageKey, JSON.stringify(currentPhotos));
-            } else {
-                localStorage.removeItem(storageKey);
-            }
-            
-            // Link limpo de compartilhamento
-            const cleanShareUrl = `${window.location.origin}${window.location.pathname}${route}`;
+            // Gerar o slug amigável
             const slug = `${slugify(p1)}-e-${slugify(p2)}`;
-            
-            // Link visualmente encurtado (mostra url base + nome do casal)
-            const displayHost = (window.location.protocol === 'file:' || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') 
-                ? 'casal-campeao.vercel.app' 
-                : window.location.host + window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '');
-            const prettyShareUrl = `https://${displayHost}/${slug}`;
+
+            // Objeto JSON com todos os dados estruturados do casal
+            const albumData = {
+                p1: p1,
+                p2: p2,
+                date: date,
+                msg: msg,
+                imgs: cloudUrls
+            };
+
+            // Salva esse objeto JSON completo diretamente no localStorage
+            localStorage.setItem(`casal_campeao_${slug}`, JSON.stringify(albumData));
+
+            // Link curto e limpo com a Hash
+            const prettyShareUrl = `${window.location.origin}${window.location.pathname}#/${slug}`;
             
             shareLinkInput.value = prettyShareUrl;
-            shareLinkInput.setAttribute('data-full-url', cleanShareUrl);
 
-            // Atualiza URL no navegador incluindo indicador de criador
-            const creatorRoute = route + "&creator=true";
-            const newUrl = `${window.location.origin}${window.location.pathname}${creatorRoute}`;
-            window.history.pushState({ path: newUrl }, '', newUrl);
+            // Atualiza a barra de endereços do criador
+            window.history.pushState({ path: prettyShareUrl }, '', prettyShareUrl);
+
+            // Flag temporária de criador
+            sessionStorage.setItem('is_creator', 'true');
+
+            // Salva fotos locais temporariamente no localStorage caso não haja cloudUrls
+            if (currentPhotos.length > 0) {
+                localStorage.setItem(`casal_campeao_photos_${slug}`, JSON.stringify(currentPhotos));
+            }
 
             // Restaura o botão
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalBtnContent;
 
             // Carrega Tela 2
-            loadAlbumScreen({
-                p1, p2, date, msg, imgs: cloudUrls,
-                mode: 'real',
-                creator: 'true'
-            });
+            loadAlbumScreen(albumData);
 
             // Mostra painel de compartilhamento
             sharingPanel.classList.remove('hidden');
@@ -1748,14 +1700,14 @@
         // --- CONFIGURAÇÃO DE COMPARTILHAMENTO ---
         shareLinkInput.addEventListener('copy', (e) => {
             e.preventDefault();
-            const urlToCopy = shareLinkInput.getAttribute('data-full-url') || shareLinkInput.value;
+            const urlToCopy = shareLinkInput.value;
             if (e.clipboardData) {
                 e.clipboardData.setData('text/plain', urlToCopy);
             }
         });
 
         btnCopyLink.addEventListener('click', () => {
-            const urlToCopy = shareLinkInput.getAttribute('data-full-url') || shareLinkInput.value;
+            const urlToCopy = shareLinkInput.value;
 
             navigator.clipboard.writeText(urlToCopy).then(() => {
                 btnCopyLink.innerHTML = `<i class="fa-solid fa-check"></i> Copiado!`;
@@ -1771,7 +1723,7 @@
         });
 
         btnWhatsappShare.addEventListener('click', () => {
-            const albumUrl = shareLinkInput.getAttribute('data-full-url') || shareLinkInput.value;
+            const albumUrl = shareLinkInput.value;
             const message = `Gerei meu site de casal usando esse site: https://casal-campeao.vercel.app/\n\nOlha só o nosso Álbum de Figurinhas Raras: ${albumUrl}`;
             const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
@@ -1779,8 +1731,11 @@
 
         // Voltar para a Configuração
         btnBackToConfig.addEventListener('click', () => {
-            // Limpa query params
+            // Limpa query params e hash
             window.history.pushState({}, '', window.location.origin + window.location.pathname);
+            
+            // Limpa flags temporárias
+            sessionStorage.removeItem('is_creator');
             
             // Limpa form e estado
             formConfig.reset();
@@ -1926,57 +1881,44 @@
 
         // --- INICIALIZAÇÃO E CHECAGEM DE QUERY PARAMS OU HASH ---
         window.addEventListener('DOMContentLoaded', () => {
-            let p1, p2, date, msg, creator = false;
-
-            // 1. Tenta decodificar a partir da hash (Link Personalizado)
-            const hashData = deserializeState(window.location.hash);
-            if (hashData) {
-                p1 = hashData.p1;
-                p2 = hashData.p2;
-                date = hashData.date;
-                msg = hashData.msg;
-                creator = window.location.hash.includes('&creator=true');
-            } else {
-                // 2. Fallback para Query Params (Retrocompatibilidade)
-                const params = new URLSearchParams(window.location.search);
-                p1 = params.get('p1');
-                p2 = params.get('p2');
-                date = params.get('date');
-                msg = params.get('msg');
-                creator = params.get('creator') === 'true';
-            }
-
-            if (p1 && p2 && date && msg) {
-                // Carrega diretamente a surpresa
-                loadAlbumScreen({
-                    p1, p2, date, msg, imgs: hashData ? hashData.imgs : [], mode: 'real'
-                });
-
-                if (creator) {
-                    sharingPanel.classList.remove('hidden');
-                    
-                    // Link de compartilhamento limpo (gerado a partir do estado atual)
-                    const cleanRoute = serializeState(p1, p2, date, msg);
-                    const cleanShareUrl = `${window.location.origin}${window.location.pathname}${cleanRoute}`;
-                    
-                    const slug = `${slugify(p1)}-e-${slugify(p2)}`;
-                    
-                    // Link visualmente encurtado (mostra url base + nome do casal)
-                    const displayHost = (window.location.protocol === 'file:' || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') 
-                        ? 'casal-campeao.vercel.app' 
-                        : window.location.host + window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '');
-                    const prettyShareUrl = `https://${displayHost}/${slug}`;
-                    
-                    shareLinkInput.value = prettyShareUrl;
-                    shareLinkInput.setAttribute('data-full-url', cleanShareUrl);
-                } else {
-                    sharingPanel.classList.add('hidden');
+            const hash = window.location.hash;
+            
+            if (hash && hash.startsWith('#/')) {
+                const slug = hash.replace('#/', '');
+                const savedData = localStorage.getItem(`casal_campeao_${slug}`);
+                
+                if (savedData) {
+                    try {
+                        const data = JSON.parse(savedData);
+                        
+                        // Determina se exibe ou não o sharingPanel com base na flag is_creator
+                        const isCreator = sessionStorage.getItem('is_creator') === 'true';
+                        
+                        // Carrega diretamente a surpresa
+                        loadAlbumScreen(data);
+                        
+                        if (isCreator) {
+                            sharingPanel.classList.remove('hidden');
+                            shareLinkInput.value = `${window.location.origin}${window.location.pathname}#/${slug}`;
+                        } else {
+                            sharingPanel.classList.add('hidden');
+                            // Se não for criador, exibe o partnerCustomizerPanel se a lista de imagens estiver vazia
+                            if (!data.imgs || data.imgs.length === 0) {
+                                partnerCustomizerPanel.classList.remove('hidden');
+                            } else {
+                                partnerCustomizerPanel.classList.add('hidden');
+                            }
+                        }
+                        return; // Finaliza com sucesso
+                    } catch (e) {
+                        console.error("Erro ao processar dados do localStorage para o slug:", e);
+                    }
                 }
-            } else {
-                // Exibe a tela de configuração
-                screenConfig.classList.remove('hidden');
-                screenAlbum.classList.add('hidden');
             }
+            
+            // Se o link for aberto sem nenhuma hash válida, garanta que a aplicação exiba a configuração inicial
+            screenConfig.classList.remove('hidden');
+            screenAlbum.classList.add('hidden');
         });
 
     </script>
