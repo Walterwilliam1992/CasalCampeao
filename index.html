@@ -378,6 +378,74 @@
                 opacity: 0;
             }
         }
+
+        /* Card Deck Layout (Cartas de baralho por trás com animação) */
+        .deck-card {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 1rem;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.8s ease, z-index 0.8s step-end;
+            will-change: transform, opacity;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* Top card (Active) */
+        .deck-card-top {
+            transform: translate(0, 0) scale(1) rotate(0deg);
+            z-index: 30;
+            opacity: 1;
+        }
+
+        /* Second card in stack */
+        .deck-card-middle {
+            transform: translate(10px, -10px) scale(0.96) rotate(3deg);
+            z-index: 20;
+            opacity: 0.85;
+        }
+
+        /* Third card in stack */
+        .deck-card-bottom {
+            transform: translate(-10px, -15px) scale(0.92) rotate(-4deg);
+            z-index: 10;
+            opacity: 0.65;
+        }
+
+        /* Hidden/Background cards */
+        .deck-card-hidden {
+            transform: translate(0, 20px) scale(0.85) rotate(0deg);
+            z-index: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Shuffle Out Animation */
+        .deck-card-shuffle-out {
+            animation: cardShuffleOut 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+            z-index: 45 !important;
+        }
+
+        @keyframes cardShuffleOut {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            45% {
+                transform: translate(120%, 15px) scale(0.95) rotate(15deg);
+                opacity: 0.9;
+            }
+            85% {
+                transform: translate(120%, 15px) scale(0.9) rotate(15deg);
+                opacity: 0.4;
+            }
+            100% {
+                transform: translate(0, 20px) scale(0.85) rotate(0deg);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen relative overflow-x-hidden selection:bg-gold-500 selection:text-slate-950">
@@ -681,7 +749,7 @@
                     </div>
 
                     <!-- Carrossel de Fotos (Dentro do card) -->
-                    <div class="relative flex-1 w-full bg-slate-950 rounded-2xl overflow-hidden border border-slate-800/80 group">
+                    <div class="relative flex-1 w-full bg-slate-950 rounded-2xl border border-slate-800/80 group">
                         <!-- Carregando... -->
                         <div id="card-spinner" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 z-20 transition-opacity duration-500">
                             <div class="w-10 h-10 border-4 border-gold-500 border-t-transparent rounded-full animate-spin"></div>
@@ -1294,6 +1362,27 @@
         }
 
 
+        // --- CLASSES DO DECK DE CARTAS (EFEITO BARALHO) ---
+        function updateDeckClasses(slides, activeIndex, shufflingIndex = -1) {
+            const len = slides.length;
+            for (let i = 0; i < len; i++) {
+                const slide = slides[i];
+                slide.className = 'deck-card'; // Reseta as classes de transformação
+                
+                if (i === shufflingIndex) {
+                    slide.classList.add('deck-card-shuffle-out');
+                } else if (i === activeIndex) {
+                    slide.classList.add('deck-card-top');
+                } else if (len > 1 && i === (activeIndex + 1) % len && (activeIndex + 1) % len !== shufflingIndex) {
+                    slide.classList.add('deck-card-middle');
+                } else if (len > 2 && i === (activeIndex + 2) % len && (activeIndex + 2) % len !== shufflingIndex) {
+                    slide.classList.add('deck-card-bottom');
+                } else {
+                    slide.classList.add('deck-card-hidden');
+                }
+            }
+        }
+
         // --- CARROSSEL ---
         function setupCarousel(images) {
             if (carouselInterval) clearInterval(carouselInterval);
@@ -1305,14 +1394,14 @@
 
             images.forEach((imgSrc, idx) => {
                 const slide = document.createElement('div');
-                slide.className = `absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${idx === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0'}`;
+                slide.className = 'deck-card deck-card-hidden';
                 
                 const img = document.createElement('img');
                 img.src = imgSrc;
-                img.className = 'w-full h-full object-cover';
+                img.className = 'w-full h-full object-cover rounded-2xl';
                 img.alt = 'Figurinha Rara';
                 
-                // Hide spinner once first image loads
+                // Remove o spinner ao carregar a primeira imagem
                 if (idx === 0) {
                     img.onload = () => {
                         cardSpinner.classList.add('opacity-0');
@@ -1327,16 +1416,27 @@
             currentCarouselIndex = 0;
             const slides = carouselSlides.children;
 
+            // Define o layout de pilha inicial
+            updateDeckClasses(slides, 0);
+
             if (slides.length > 1) {
                 carouselInterval = setInterval(() => {
-                    slides[currentCarouselIndex].classList.replace('opacity-100', 'opacity-0');
-                    slides[currentCarouselIndex].classList.replace('z-10', 'z-0');
+                    const prevIndex = currentCarouselIndex;
+                    const nextIndex = (currentCarouselIndex + 1) % slides.length;
                     
-                    currentCarouselIndex = (currentCarouselIndex + 1) % slides.length;
+                    // Inicia a animação de shuffle-out no card ativo e move a fila
+                    updateDeckClasses(slides, nextIndex, prevIndex);
                     
-                    slides[currentCarouselIndex].classList.replace('opacity-0', 'opacity-100');
-                    slides[currentCarouselIndex].classList.replace('z-0', 'z-10');
-                }, 3500);
+                    currentCarouselIndex = nextIndex;
+
+                    // Após o término do shuffle-out (800ms), reposiciona o card anterior no fundo do baralho
+                    setTimeout(() => {
+                        if (currentCarouselIndex === nextIndex) {
+                            updateDeckClasses(slides, currentCarouselIndex);
+                        }
+                    }, 800);
+
+                }, 4000);
             } else if (slides.length === 1) {
                 // Se só tem 1 foto, remove spinner
                 const singleImg = slides[0].querySelector('img');
