@@ -830,7 +830,7 @@
 
             <!-- Watermark for Story Mode (só aparece em Story Mode) -->
             <div id="story-watermark" class="hidden flex-col items-center text-center mt-6 z-50">
-                <p class="text-xs text-slate-400 font-bold tracking-wider">Crie o seu em: <span class="text-gold-400">o-casal-campeao.com.br</span></p>
+                <p class="text-xs text-slate-400 font-bold tracking-wider">Crie o seu em: <span class="text-gold-400">casal-campeao.vercel.app</span></p>
                 <p class="text-[10px] text-slate-500 mt-1 uppercase tracking-widest font-semibold">🏆 Nosso amor é convocação oficial para a Copa 2026!</p>
             </div>
 
@@ -1643,7 +1643,16 @@
             
             // Link limpo de compartilhamento
             const cleanShareUrl = `${window.location.origin}${window.location.pathname}${route}`;
-            shareLinkInput.value = cleanShareUrl;
+            const slug = `${slugify(p1)}-e-${slugify(p2)}`;
+            
+            // Link visualmente encurtado (mostra url base + nome do casal)
+            const displayHost = (window.location.protocol === 'file:' || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') 
+                ? 'casal-campeao.vercel.app' 
+                : window.location.host + window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '');
+            const prettyShareUrl = `https://${displayHost}/${slug}`;
+            
+            shareLinkInput.value = prettyShareUrl;
+            shareLinkInput.setAttribute('data-full-url', cleanShareUrl);
 
             // Atualiza URL no navegador incluindo indicador de criador
             const creatorRoute = route + "&creator=true";
@@ -1663,11 +1672,18 @@
 
 
         // --- CONFIGURAÇÃO DE COMPARTILHAMENTO ---
-        btnCopyLink.addEventListener('click', () => {
-            shareLinkInput.select();
-            shareLinkInput.setSelectionRange(0, 99999); // Para mobile
+        shareLinkInput.addEventListener('copy', (e) => {
+            e.preventDefault();
+            const urlToCopy = shareLinkInput.getAttribute('data-full-url') || shareLinkInput.value;
+            if (e.clipboardData) {
+                e.clipboardData.setData('text/plain', urlToCopy);
+            }
+        });
 
-            navigator.clipboard.writeText(shareLinkInput.value).then(() => {
+        btnCopyLink.addEventListener('click', () => {
+            const urlToCopy = shareLinkInput.getAttribute('data-full-url') || shareLinkInput.value;
+
+            navigator.clipboard.writeText(urlToCopy).then(() => {
                 btnCopyLink.innerHTML = `<i class="fa-solid fa-check"></i> Copiado!`;
                 btnCopyLink.className = "bg-green-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 flex items-center gap-1.5 whitespace-nowrap";
                 
@@ -1681,7 +1697,7 @@
         });
 
         btnWhatsappShare.addEventListener('click', () => {
-            const albumUrl = shareLinkInput.value;
+            const albumUrl = shareLinkInput.getAttribute('data-full-url') || shareLinkInput.value;
             const message = `Gerei meu site de casal usando esse site: https://casal-campeao.vercel.app/\n\nOlha só o nosso Álbum de Figurinhas Raras: ${albumUrl}`;
             const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
@@ -1868,7 +1884,17 @@
                     // Link de compartilhamento limpo (gerado a partir do estado atual)
                     const cleanRoute = serializeState(p1, p2, date, msg);
                     const cleanShareUrl = `${window.location.origin}${window.location.pathname}${cleanRoute}`;
-                    shareLinkInput.value = cleanShareUrl;
+                    
+                    const slug = `${slugify(p1)}-e-${slugify(p2)}`;
+                    
+                    // Link visualmente encurtado (mostra url base + nome do casal)
+                    const displayHost = (window.location.protocol === 'file:' || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') 
+                        ? 'casal-campeao.vercel.app' 
+                        : window.location.host + window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '');
+                    const prettyShareUrl = `https://${displayHost}/${slug}`;
+                    
+                    shareLinkInput.value = prettyShareUrl;
+                    shareLinkInput.setAttribute('data-full-url', cleanShareUrl);
                 } else {
                     sharingPanel.classList.add('hidden');
                 }
