@@ -159,16 +159,24 @@
             border: 1px solid rgba(251, 191, 36, 0.15);
         }
 
-        /* Holographic Shiny Figurine Card */
-        .holographic-shine {
+        /* Container principal da figurinha (Sem overflow: hidden para o baralho poder vazar) */
+        .holographic-wrapper {
             position: relative;
-            overflow: hidden;
             border: 4px solid #f59e0b;
             box-shadow: 0 0 20px rgba(245, 158, 11, 0.4), inset 0 0 15px rgba(245, 158, 11, 0.2);
         }
 
-        /* Holographic shine layer overlay */
-        .holographic-shine::after {
+        /* Camada holográfica separada (Esta sim esconde os excessos do brilho) */
+        .holographic-layer {
+            position: absolute;
+            inset: 0;
+            border-radius: 1.25rem;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 35; /* Fica por cima da foto, mas atrás do texto */
+        }
+
+        .holographic-layer::after {
             content: '';
             position: absolute;
             top: -150%;
@@ -185,8 +193,6 @@
             );
             transform: rotate(-30deg);
             animation: hologram 6s ease-in-out infinite;
-            pointer-events: none;
-            z-index: 5;
         }
 
         @keyframes hologram {
@@ -398,25 +404,40 @@
             transform: translate(0, 0) scale(1) rotate(0deg);
             z-index: 30;
             opacity: 1;
+            box-shadow: none;
+            border: none;
         }
 
         /* Second card in stack */
         .deck-card-middle {
-            transform: translate(10px, -10px) scale(0.96) rotate(3deg);
+            transform: translate(18px, -18px) scale(0.95) rotate(5deg);
             z-index: 20;
             opacity: 0.85;
         }
 
         /* Third card in stack */
         .deck-card-bottom {
-            transform: translate(-10px, -15px) scale(0.92) rotate(-4deg);
+            transform: translate(-18px, -24px) scale(0.90) rotate(-6deg);
             z-index: 10;
             opacity: 0.65;
         }
 
+        /* Interação de Hover no Album (Foca na primeira carta e recua as outras para trás) */
+        #album-card:hover .deck-card-top {
+            transform: scale(1.02);
+        }
+        #album-card:hover .deck-card-middle {
+            transform: translate(25px, -10px) scale(0.88) rotate(10deg);
+            opacity: 0.3;
+        }
+        #album-card:hover .deck-card-bottom {
+            transform: translate(-25px, -15px) scale(0.82) rotate(-10deg);
+            opacity: 0.15;
+        }
+
         /* Hidden/Background cards */
         .deck-card-hidden {
-            transform: translate(0, 20px) scale(0.85) rotate(0deg);
+            transform: translate(0, 30px) scale(0.80) rotate(0deg);
             z-index: 0;
             opacity: 0;
             pointer-events: none;
@@ -425,7 +446,7 @@
         /* Shuffle Out Animation */
         .deck-card-shuffle-out {
             animation: cardShuffleOut 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
-            z-index: 45 !important;
+            z-index: 32 !important; /* Mantém atrás do brilho (35) e do texto (40) para não ofuscar */
         }
 
         @keyframes cardShuffleOut {
@@ -731,60 +752,77 @@
 
             <!-- FIGURINHA RARA / CARD DE DESTAQUE -->
             <div class="flex justify-center py-2">
-                <div id="album-card" class="holographic-shine rounded-3xl w-full max-w-[350px] aspect-[3/4.2] flex flex-col p-4 bg-slate-900/90 relative z-30 select-none">
+                <div class="relative w-full max-w-[350px] aspect-[3/4.2] select-none">
                     
-                    <!-- Top do Card: Badge do Casal e Ano -->
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-[10px] font-black tracking-widest text-gold-400 uppercase bg-gold-950/80 px-2 py-0.5 rounded-full border border-gold-500/30">
-                            CAMPEÕES
-                        </span>
-                        <div class="flex items-center gap-1">
-                            <span class="text-[10px] font-mono text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded border border-slate-700 font-bold">
-                                2026
-                            </span>
-                            <span class="text-[10px] font-black text-rose-500 animate-pulse bg-rose-950/60 px-1.5 py-0.5 rounded border border-rose-500/30">
-                                RARA
-                            </span>
-                        </div>
+                    <!-- Background Card 2 (Bottom Stack) -->
+                    <div id="deck-card-bottom" class="deck-card deck-card-bottom hidden">
+                        <img id="deck-img-bottom" class="w-full h-full object-cover rounded-3xl opacity-60" src="">
                     </div>
 
-                    <!-- Carrossel de Fotos (Dentro do card) -->
-                    <div class="relative flex-1 w-full bg-slate-950 rounded-2xl border border-slate-800/80 group">
-                        <!-- Carregando... -->
-                        <div id="card-spinner" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 z-20 transition-opacity duration-500">
-                            <div class="w-10 h-10 border-4 border-gold-500 border-t-transparent rounded-full animate-spin"></div>
-                            <span class="text-xs text-slate-400 mt-3 font-medium">Revelando figurinha rara...</span>
+                    <!-- Background Card 1 (Middle Stack) -->
+                    <div id="deck-card-middle" class="deck-card deck-card-middle hidden">
+                        <img id="deck-img-middle" class="w-full h-full object-cover rounded-3xl opacity-80" src="">
+                    </div>
+
+                    <!-- Card Principal de Figurinha -->
+                    <div id="album-card" class="holographic-wrapper rounded-3xl w-full h-full flex flex-col p-4 bg-slate-900/90 relative z-30 select-none">
+                        
+                        <!-- Camada do Brilho Isolada -->
+                        <div class="holographic-layer"></div>
+
+                        <!-- Top do Card: Badge do Casal e Ano -->
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-black tracking-widest text-gold-400 uppercase bg-gold-950/80 px-2 py-0.5 rounded-full border border-gold-500/30">
+                                CAMPEÕES
+                            </span>
+                            <div class="flex items-center gap-1">
+                                <span class="text-[10px] font-mono text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded border border-slate-700 font-bold">
+                                    2026
+                                </span>
+                                <span class="text-[10px] font-black text-rose-500 animate-pulse bg-rose-950/60 px-1.5 py-0.5 rounded border border-rose-500/30">
+                                    RARA
+                                </span>
+                            </div>
                         </div>
 
-                        <!-- Slides do Carrossel -->
-                        <div id="carousel-slides" class="absolute inset-0 w-full h-full">
-                            <!-- Slides serão adicionados via JS com classe absolute inset-0 w-full h-full transition-opacity duration-1000 -->
-                        </div>
+                        <!-- Carrossel de Fotos (Dentro do card) -->
+                        <div class="relative flex-1 w-full bg-slate-950 rounded-2xl overflow-hidden border border-slate-800/80 group">
+                            <!-- Carregando... -->
+                            <div id="card-spinner" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 z-40 transition-opacity duration-500">
+                                <div class="w-10 h-10 border-4 border-gold-500 border-t-transparent rounded-full animate-spin"></div>
+                                <span class="text-xs text-slate-400 mt-3 font-medium">Revelando figurinha rara...</span>
+                            </div>
 
-                        <!-- Efeitos de gradiente e legenda dentro do card -->
-                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent p-4 z-10">
-                            <!-- Nomes do Casal no Rodapé da Imagem -->
-                            <div class="text-center">
-                                <h3 id="card-couple-names" class="text-lg md:text-xl font-black font-display tracking-tight text-white uppercase glow-gold">
-                                    ROMÁRIO &amp; BEBETO
-                                </h3>
-                                <div class="flex items-center justify-center gap-1.5 mt-0.5 text-xs text-rose-400 font-bold uppercase tracking-wider">
-                                    <i class="fa-solid fa-heart animate-pulse"></i>
-                                    <span>Dupla Invicta</span>
+                            <!-- Slides do Carrossel -->
+                            <div id="carousel-slides" class="absolute inset-0 w-full h-full">
+                                <!-- Slides serão adicionados via JS -->
+                            </div>
+
+                            <!-- Efeitos de gradiente e legenda dentro do card -->
+                            <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent p-4 z-40">
+                                <!-- Nomes do Casal no Rodapé da Imagem -->
+                                <div class="text-center">
+                                    <h3 id="card-couple-names" class="text-lg md:text-xl font-black font-display tracking-tight text-white uppercase glow-gold">
+                                        ROMÁRIO &amp; BEBETO
+                                    </h3>
+                                    <div class="flex items-center justify-center gap-1.5 mt-0.5 text-xs text-rose-400 font-bold uppercase tracking-wider">
+                                        <i class="fa-solid fa-heart animate-pulse"></i>
+                                        <span>Dupla Invicta</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Rodapé do Card: Bandeira e Info Adicional -->
-                    <div class="mt-3 flex items-center justify-between text-slate-400 text-[10px]">
-                        <div class="flex items-center gap-1 bg-slate-950/80 px-2 py-1 rounded-lg border border-slate-800">
-                            <span class="text-xs">🇧🇷</span>
-                            <span class="font-bold tracking-wider">BRASIL</span>
-                        </div>
-                        <div class="text-right">
-                            <span class="block font-medium">Copa do Amor</span>
-                            <span class="block font-mono text-gold-400 font-bold text-xs" id="card-score">★ ★ ★ ★ ★</span>
+                        <!-- Rodapé do Card: Bandeira e Info Adicional -->
+                        <div class="mt-3 flex items-center justify-between text-slate-400 text-[10px]">
+                            <div class="flex items-center gap-1 bg-slate-950/80 px-2 py-1 rounded-lg border border-slate-800">
+                                <span class="text-xs">🇧🇷</span>
+                                <span class="font-bold tracking-wider">BRASIL</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="block font-medium">Copa do Amor</span>
+                                <span class="block font-mono text-gold-400 font-bold text-xs" id="card-score">★ ★ ★ ★ ★</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1362,27 +1400,6 @@
         }
 
 
-        // --- CLASSES DO DECK DE CARTAS (EFEITO BARALHO) ---
-        function updateDeckClasses(slides, activeIndex, shufflingIndex = -1) {
-            const len = slides.length;
-            for (let i = 0; i < len; i++) {
-                const slide = slides[i];
-                slide.className = 'deck-card'; // Reseta as classes de transformação
-                
-                if (i === shufflingIndex) {
-                    slide.classList.add('deck-card-shuffle-out');
-                } else if (i === activeIndex) {
-                    slide.classList.add('deck-card-top');
-                } else if (len > 1 && i === (activeIndex + 1) % len && (activeIndex + 1) % len !== shufflingIndex) {
-                    slide.classList.add('deck-card-middle');
-                } else if (len > 2 && i === (activeIndex + 2) % len && (activeIndex + 2) % len !== shufflingIndex) {
-                    slide.classList.add('deck-card-bottom');
-                } else {
-                    slide.classList.add('deck-card-hidden');
-                }
-            }
-        }
-
         // --- CARROSSEL ---
         function setupCarousel(images) {
             if (carouselInterval) clearInterval(carouselInterval);
@@ -1394,7 +1411,7 @@
 
             images.forEach((imgSrc, idx) => {
                 const slide = document.createElement('div');
-                slide.className = 'deck-card deck-card-hidden';
+                slide.className = `absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${idx === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0'}`;
                 
                 const img = document.createElement('img');
                 img.src = imgSrc;
@@ -1413,32 +1430,52 @@
                 carouselSlides.appendChild(slide);
             });
 
+            const middleCard = document.getElementById('deck-card-middle');
+            const bottomCard = document.getElementById('deck-card-bottom');
+            const middleImg = document.getElementById('deck-img-middle');
+            const bottomImg = document.getElementById('deck-img-bottom');
+
+            function updateBackgroundCards(activeIndex) {
+                const len = images.length;
+                if (len <= 1) {
+                    if (middleCard) middleCard.classList.add('hidden');
+                    if (bottomCard) bottomCard.classList.add('hidden');
+                } else if (len === 2) {
+                    if (middleCard) {
+                        middleCard.classList.remove('hidden');
+                        if (middleImg) middleImg.src = images[(activeIndex + 1) % len];
+                    }
+                    if (bottomCard) bottomCard.classList.add('hidden');
+                } else {
+                    if (middleCard) {
+                        middleCard.classList.remove('hidden');
+                        if (middleImg) middleImg.src = images[(activeIndex + 1) % len];
+                    }
+                    if (bottomCard) {
+                        bottomCard.classList.remove('hidden');
+                        if (bottomImg) bottomImg.src = images[(activeIndex + 2) % len];
+                    }
+                }
+            }
+
             currentCarouselIndex = 0;
             const slides = carouselSlides.children;
-
-            // Define o layout de pilha inicial
-            updateDeckClasses(slides, 0);
+            updateBackgroundCards(0);
 
             if (slides.length > 1) {
                 carouselInterval = setInterval(() => {
-                    const prevIndex = currentCarouselIndex;
-                    const nextIndex = (currentCarouselIndex + 1) % slides.length;
+                    slides[currentCarouselIndex].classList.replace('opacity-100', 'opacity-0');
+                    slides[currentCarouselIndex].classList.replace('z-10', 'z-0');
                     
-                    // Inicia a animação de shuffle-out no card ativo e move a fila
-                    updateDeckClasses(slides, nextIndex, prevIndex);
+                    currentCarouselIndex = (currentCarouselIndex + 1) % slides.length;
                     
-                    currentCarouselIndex = nextIndex;
+                    slides[currentCarouselIndex].classList.replace('opacity-0', 'opacity-100');
+                    slides[currentCarouselIndex].classList.replace('z-0', 'z-10');
 
-                    // Após o término do shuffle-out (800ms), reposiciona o card anterior no fundo do baralho
-                    setTimeout(() => {
-                        if (currentCarouselIndex === nextIndex) {
-                            updateDeckClasses(slides, currentCarouselIndex);
-                        }
-                    }, 800);
-
+                    // Atualiza as fotos de fundo para corresponderem ao novo estado da pilha
+                    updateBackgroundCards(currentCarouselIndex);
                 }, 4000);
             } else if (slides.length === 1) {
-                // Se só tem 1 foto, remove spinner
                 const singleImg = slides[0].querySelector('img');
                 if (singleImg.complete) {
                     cardSpinner.classList.add('opacity-0');
