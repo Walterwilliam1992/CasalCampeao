@@ -950,6 +950,33 @@
             }
         }
 
+        function getAlbumPhotosKey(customCVal) {
+            if (customCVal) {
+                return `casal_campeao_photos_${customCVal}`;
+            }
+            let cVal = '';
+            const hash = window.location.hash;
+            if (hash && hash.includes('?c=')) {
+                const parts = hash.split('?c=')[1];
+                if (parts) {
+                    cVal = parts.split('&')[0];
+                }
+            } else {
+                const params = new URLSearchParams(window.location.search);
+                const p1 = params.get('p1') || '';
+                const p2 = params.get('p2') || '';
+                const date = params.get('date') || '';
+                const msg = params.get('msg') || '';
+                if (p1 || p2) {
+                    const data = { p1, p2, date, msg };
+                    try {
+                        cVal = btoa(encodeURIComponent(JSON.stringify(data)));
+                    } catch(e) {}
+                }
+            }
+            return cVal ? `casal_campeao_photos_${cVal}` : 'casal_campeao_photos';
+        }
+
         let currentPhotos = [];
         let romanceInterval = null;
         let carouselInterval = null;
@@ -1029,7 +1056,8 @@
                 photos = photos.concat(partnerPhotos);
             }
             try {
-                const saved = localStorage.getItem('casal_campeao_photos');
+                const key = getAlbumPhotosKey();
+                const saved = localStorage.getItem(key);
                 if (saved) {
                     const parsed = JSON.parse(saved);
                     if (parsed && parsed.length > 0) {
@@ -1389,7 +1417,8 @@
             cardSpinner.classList.remove('hidden', 'opacity-0');
             
             // Fotos Reais do LocalStorage
-            const saved = localStorage.getItem('casal_campeao_photos');
+            const key = getAlbumPhotosKey();
+            const saved = localStorage.getItem(key);
             if (saved) {
                 try {
                     const list = JSON.parse(saved);
@@ -1460,15 +1489,20 @@
             const date = document.getElementById('romance-date').value;
             const msg = document.getElementById('coach-message').value.trim();
 
-            // Salva fotos no localStorage
-            if (currentPhotos.length > 0) {
-                localStorage.setItem('casal_campeao_photos', JSON.stringify(currentPhotos));
-            } else {
-                localStorage.removeItem('casal_campeao_photos');
-            }
-
             // Cria o link personalizado com a hash
             const route = serializeState(p1, p2, date, msg);
+            let cVal = '';
+            if (route.includes('?c=')) {
+                cVal = route.split('?c=')[1].split('&')[0];
+            }
+            const storageKey = getAlbumPhotosKey(cVal);
+
+            // Salva fotos no localStorage com a chave única do álbum
+            if (currentPhotos.length > 0) {
+                localStorage.setItem(storageKey, JSON.stringify(currentPhotos));
+            } else {
+                localStorage.removeItem(storageKey);
+            }
             
             // Link limpo de compartilhamento
             const cleanShareUrl = `${window.location.origin}${window.location.pathname}${route}`;
@@ -1553,7 +1587,8 @@
                 return;
             }
 
-            localStorage.setItem('casal_campeao_photos', JSON.stringify(partnerPhotos));
+            const key = getAlbumPhotosKey();
+            localStorage.setItem(key, JSON.stringify(partnerPhotos));
             partnerModal.classList.add('hidden');
             partnerCustomizerPanel.classList.add('hidden');
 
