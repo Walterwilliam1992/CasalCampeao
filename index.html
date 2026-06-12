@@ -698,58 +698,6 @@
                 </button>
             </div>
 
-            <!-- Bloco de Recomendação de Parceiros (Dicas do Técnico para o Jantar) -->
-            <div id="partner-recommendations" class="glass-panel rounded-3xl p-6 border border-slate-800/80 shadow-xl relative overflow-hidden max-w-2xl mx-auto">
-                <div class="absolute top-0 right-0 w-20 h-20 bg-gold-500/5 rounded-full blur-xl"></div>
-                <h3 class="text-xs font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <span class="text-gold-400 text-sm">🏆</span> Dicas do Técnico para o Jantar do Título
-                </h3>
-                <p class="text-xs text-slate-400 mb-4 leading-relaxed">
-                    Toda grande vitória merece uma comemoração de gala. Confira as sugestões especiais do técnico para garantir os 3 pontos na mesa:
-                </p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- Parceiro/Afiliado 1 -->
-                    <a href="https://example.com/restaurantes" target="_blank" rel="noopener noreferrer" class="group flex flex-col justify-between p-4 rounded-2xl bg-slate-950/80 border border-slate-800/80 hover:border-gold-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-gold-500/5">
-                        <div>
-                            <span class="text-[9px] font-bold tracking-widest text-gold-400 uppercase bg-gold-950/50 px-2 py-0.5 rounded border border-gold-500/20">RESTAURANTE RARA</span>
-                            <h4 class="text-xs font-bold text-white mt-2 mb-1 group-hover:text-gold-400 transition-colors">Reserva Premium: Encontro dos Campeões</h4>
-                            <p class="text-[10px] text-slate-500 leading-snug">Reserve uma mesa no bistrô mais romântico da cidade com desconto exclusivo.</p>
-                        </div>
-                        <span class="inline-flex items-center gap-1.5 text-xs text-gold-400 font-bold mt-4 group-hover:translate-x-1 transition-transform">
-                            Reservar Mesa <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                        </span>
-                    </a>
-                    <!-- Parceiro/Afiliado 2 -->
-                    <a href="https://example.com/vinho-chocolates" target="_blank" rel="noopener noreferrer" class="group flex flex-col justify-between p-4 rounded-2xl bg-slate-950/80 border border-slate-800/80 hover:border-romance-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-romance-500/5">
-                        <div>
-                            <span class="text-[9px] font-bold tracking-widest text-romance-400 uppercase bg-romance-950/50 px-2 py-0.5 rounded border border-romance-500/20">COMBO ROMÂNTICO</span>
-                            <h4 class="text-xs font-bold text-white mt-2 mb-1 group-hover:text-romance-400 transition-colors">Vinho &amp; Chocolates Selecionados</h4>
-                            <p class="text-[10px] text-slate-500 leading-snug">O acompanhamento perfeito para celebrar o título de Casal Campeão.</p>
-                        </div>
-                        <span class="inline-flex items-center gap-1.5 text-xs text-romance-400 font-bold mt-4 group-hover:translate-x-1 transition-transform">
-                            Comprar Kit <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                        </span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Card de Apoio Central (Apoie o Dev) -->
-            <div id="support-center-card" class="glass-panel rounded-3xl p-6 border border-amber-500/25 shadow-xl relative overflow-hidden max-w-2xl mx-auto text-center mt-6">
-                <div class="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-xl"></div>
-                <div class="relative z-10">
-                    <span class="text-2xl mb-2 block animate-bounce">☕</span>
-                    <h3 class="text-sm md:text-base font-bold text-white uppercase tracking-wider mb-2">
-                        Gostou do Álbum dos Campeões?
-                    </h3>
-                    <p class="text-xs text-slate-400 mb-4 max-w-md mx-auto leading-relaxed">
-                        Este projeto é 100% gratuito e sem anúncios invasivos. Se ele ajudou a arrancar um sorriso do seu mozão, que tal apoiar o desenvolvedor pagando um cafezinho para o juiz?
-                    </p>
-                    <button id="btn-support-center" class="bg-gradient-to-r from-gold-500 to-amber-500 hover:from-gold-400 hover:to-amber-400 text-slate-950 px-6 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 transform hover:scale-105 active:scale-95 inline-flex items-center gap-2 shadow-lg shadow-gold-500/10">
-                        <i class="fa-solid fa-mug-hot"></i> Pagar Café pro Juiz (Via Pix)
-                    </button>
-                </div>
-            </div>
-
             <!-- FIGURINHA RARA / CARD DE DESTAQUE -->
             <div class="flex justify-center py-2">
                 <div class="relative w-full max-w-[350px] aspect-[3/4.2] select-none">
@@ -910,6 +858,73 @@
                 </div>
             </div>
 
+            <!-- O Painel dos Próximos Jogos (Nossa Agenda) -->
+            <div id="partner-recommendations" class="glass-panel rounded-3xl p-6 border border-slate-800/80 shadow-xl relative overflow-hidden max-w-2xl mx-auto">
+                <div class="absolute top-0 right-0 w-20 h-20 bg-gold-500/5 rounded-full blur-xl"></div>
+                <h3 class="text-xs font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <span class="text-gold-400 text-sm">📅</span> O Painel dos Próximos Jogos (Nossa Agenda)
+                </h3>
+                <p class="text-xs text-slate-400 mb-6 leading-relaxed">
+                    Um bloco romântico focado no futuro do casal, mostrando quais são os próximos "campeonatos" que vocês vão disputar e ganhar juntos.
+                </p>
+                
+                <!-- Linha do tempo estilizada como fases da Copa -->
+                <div class="space-y-4 relative before:absolute before:inset-y-0 before:left-3.5 before:w-0.5 before:bg-slate-800">
+                    <!-- Item 1 -->
+                    <div class="flex gap-4 relative">
+                        <div class="w-7 h-7 rounded-full bg-slate-900 border border-gold-500/50 flex items-center justify-center text-xs shrink-0 z-10">
+                            🗓️
+                        </div>
+                        <div class="bg-slate-950/40 border border-slate-800/80 rounded-2xl p-4 flex-1">
+                            <span class="text-[9px] font-bold tracking-widest text-gold-400 uppercase bg-gold-950/50 px-2 py-0.5 rounded border border-gold-500/20">Fase de Grupos</span>
+                            <h4 class="text-xs font-bold text-white mt-2 mb-1">Próxima Rodada:</h4>
+                            <p class="text-[11px] text-slate-400 font-medium">Viagem inesquecível de fim de semana.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="flex gap-4 relative">
+                        <div class="w-7 h-7 rounded-full bg-slate-900 border border-romance-500/50 flex items-center justify-center text-xs shrink-0 z-10">
+                            🗓️
+                        </div>
+                        <div class="bg-slate-950/40 border border-slate-800/80 rounded-2xl p-4 flex-1">
+                            <span class="text-[9px] font-bold tracking-widest text-romance-400 uppercase bg-romance-950/50 px-2 py-0.5 rounded border border-romance-500/20">Mata-Mata</span>
+                            <h4 class="text-xs font-bold text-white mt-2 mb-1">Grande Final:</h4>
+                            <p class="text-[11px] text-slate-400 font-medium">Envelhecer juntos e comemorar as Bodas.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="flex gap-4 relative">
+                        <div class="w-7 h-7 rounded-full bg-gold-500/10 border border-gold-500 flex items-center justify-center text-xs shrink-0 z-10 animate-pulse">
+                            🏆
+                        </div>
+                        <div class="bg-slate-950/40 border border-gold-500/20 rounded-2xl p-4 flex-1">
+                            <span class="text-[9px] font-bold tracking-widest text-gold-400 uppercase bg-gold-950/50 px-2 py-0.5 rounded border border-gold-500/20">Taça de Ouro</span>
+                            <h4 class="text-xs font-bold text-white mt-2 mb-1">Objetivo da Temporada:</h4>
+                            <p class="text-[11px] text-slate-400 font-medium">Continuar fazendo o outro a pessoa mais feliz do mundo todos os dias.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card de Apoio Central (Apoie o Dev) -->
+            <div id="support-center-card" class="glass-panel rounded-3xl p-6 border border-amber-500/25 shadow-xl relative overflow-hidden max-w-2xl mx-auto text-center mt-6">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-xl"></div>
+                <div class="relative z-10">
+                    <span class="text-2xl mb-2 block animate-bounce">☕</span>
+                    <h3 class="text-sm md:text-base font-bold text-white uppercase tracking-wider mb-2">
+                        Gostou do Álbum dos Campeões?
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-4 max-w-md mx-auto leading-relaxed">
+                        Este projeto é 100% gratuito e sem anúncios invasivos. Se ele ajudou a arrancar um sorriso do seu mozão, que tal apoiar o desenvolvedor pagando um cafezinho para o juiz?
+                    </p>
+                    <button id="btn-support-center" class="bg-gradient-to-r from-gold-500 to-amber-500 hover:from-gold-400 hover:to-amber-400 text-slate-950 px-6 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 transform hover:scale-105 active:scale-95 inline-flex items-center gap-2 shadow-lg shadow-gold-500/10">
+                        <i class="fa-solid fa-mug-hot"></i> Pagar Café pro Juiz (Via Pix)
+                    </button>
+                </div>
+            </div>
+
             <!-- Botão de Voltar / Nova Escalação -->
             <div class="flex justify-center pt-4">
                 <button id="btn-back-to-config" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-slate-400 hover:text-white hover:border-slate-700 transition-all duration-300">
@@ -920,18 +935,7 @@
 
     </main>
 
-    <!-- Footer Geral -->
     <footer class="relative z-20 border-t border-slate-900/60 bg-slate-950/80 backdrop-blur-md text-slate-500 text-[10px] md:text-xs py-6 text-center">
-        <!-- Banner de Anúncio / Monetização -->
-        <div class="max-w-4xl mx-auto px-4 mb-4 relative z-20">
-            <div class="glass-panel rounded-2xl p-4 border border-slate-900/40 text-center relative overflow-hidden group hover:border-gold-500/20 transition-all duration-300">
-                <span class="absolute top-1.5 right-2 text-[7px] font-bold tracking-widest text-slate-600 uppercase">Patrocinado</span>
-                <div class="py-4 flex flex-col items-center justify-center border border-dashed border-slate-800 rounded-xl bg-slate-950/40 min-h-[60px]">
-                    <p class="text-[11px] text-slate-400 font-medium tracking-wide">Espaço Reservado para Anúncio / Monetização</p>
-                    <p class="text-[9px] text-slate-600 mt-0.5">Seu banner de monetização aqui (728x90 ou bloco responsivo)</p>
-                </div>
-            </div>
-        </div>
         <p>© 2026 - Copa do Amor. Feito com ❤️ para todos os casais campeões.</p>
         <p class="mt-1">Nenhum dado é enviado para servidores. Tudo é processado localmente no seu dispositivo.</p>
     </footer>
