@@ -66,6 +66,32 @@
 
     <!-- Custom CSS for advanced animations and visual styles -->
     <style>
+        /* Shaking & Flash Animations for Sticker Pack */
+        @keyframes shakePack {
+            0% { transform: rotate(0deg) scale(1); }
+            20% { transform: rotate(-4deg) scale(1.05); }
+            40% { transform: rotate(4deg) scale(1.08); }
+            60% { transform: rotate(-4deg) scale(1.1); }
+            80% { transform: rotate(4deg) scale(1.12); }
+            100% { transform: rotate(0deg) scale(1.15); filter: brightness(1.5); }
+        }
+        .shake-animation {
+            animation: shakePack 0.7s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        #gold-flash {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle, #ffffff 10%, #facc15 60%, #000000 100%);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease-out;
+        }
+        #gold-flash.active {
+            opacity: 1;
+        }
+
         /* Smooth transitions */
         .fade-in {
             animation: fadeIn 0.8s ease-out forwards;
@@ -330,9 +356,83 @@
             transform: translateX(-50%) translateY(0);
             opacity: 1;
         }
+
+        /* Efeito de explosão de corações ao abrir o pacote */
+        .heart-burst-particle {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1000;
+            filter: drop-shadow(0 0 6px rgba(244, 63, 94, 0.7));
+            animation: burstHeart 1s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+            font-size: 1.5rem;
+            will-change: transform, opacity;
+        }
+
+        @keyframes burstHeart {
+            0% {
+                transform: translate(-50%, -50%) scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(var(--scale)) rotate(var(--rot));
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen relative overflow-x-hidden selection:bg-gold-500 selection:text-slate-950">
+
+    <!-- Flash Dourado de Revelação -->
+    <div id="gold-flash"></div>
+
+    <!-- Overlay do Pacotinho de Figurinhas -->
+    <div id="sticker-pack-overlay" class="fixed inset-0 z-50 bg-slate-950/95 flex flex-col items-center justify-center p-4 hidden backdrop-blur-sm overflow-hidden select-none">
+        
+        <!-- Efeitos de Brilho de Fundo -->
+        <div class="absolute w-[500px] h-[500px] rounded-full bg-gold-500/10 blur-[120px] animate-pulse pointer-events-none"></div>
+        
+        <div id="sticker-pack-container" class="relative cursor-pointer group transition-transform duration-500 active:scale-95 z-10">
+            <!-- Efeito de contorno dourado brilhante -->
+            <div class="absolute -inset-4 rounded-[30px] bg-gradient-to-r from-gold-500 via-amber-500 to-yellow-300 opacity-30 blur-lg group-hover:opacity-60 transition-opacity duration-500 animate-pulse"></div>
+            
+            <!-- Pacotinho -->
+            <div id="sticker-pack" class="relative w-[280px] h-[390px] rounded-[24px] bg-gradient-to-b from-blue-700 via-blue-900 to-slate-950 border-[6px] border-gold-500 shadow-2xl overflow-hidden flex flex-col justify-between p-6 transform hover:rotate-1 hover:scale-102 transition-all duration-300">
+                <!-- Serrilhado superior -->
+                <div class="absolute top-0 left-0 w-full h-5 bg-gradient-to-r from-slate-400 via-slate-200 to-slate-400 border-b border-slate-500/50 flex justify-between px-2 overflow-hidden">
+                    <div class="w-full h-full bg-[linear-gradient(90deg,transparent_50%,#000_50%)] bg-[size:4px_100%] opacity-30"></div>
+                </div>
+                
+                <!-- Serrilhado inferior -->
+                <div class="absolute bottom-0 left-0 w-full h-5 bg-gradient-to-r from-slate-400 via-slate-200 to-slate-400 border-t border-slate-500/50 flex justify-between px-2 overflow-hidden">
+                    <div class="w-full h-full bg-[linear-gradient(90deg,transparent_50%,#000_50%)] bg-[size:4px_100%] opacity-30"></div>
+                </div>
+
+                <div class="mt-4 text-center">
+                    <span class="text-[9px] font-black tracking-widest text-gold-400 uppercase bg-gold-950/80 px-2.5 py-0.5 rounded-full border border-gold-500/30">
+                        CONVOCADOS 2026
+                    </span>
+                    <h3 class="text-lg font-black font-display text-white tracking-tight mt-3 uppercase leading-none">
+                        ÁLBUM DO <br><span class="bg-gradient-to-r from-gold-400 to-yellow-300 bg-clip-text text-transparent">NOSSO AMOR</span>
+                    </h3>
+                </div>
+
+                <div class="my-auto flex flex-col items-center justify-center relative">
+                    <div class="w-24 h-24 rounded-full bg-gold-500/10 border-2 border-gold-500/50 flex items-center justify-center text-gold-400 text-4xl shadow-inner group-hover:scale-110 transition-transform duration-500">
+                        <i class="fa-solid fa-heart text-rose-500 animate-pulse"></i>
+                    </div>
+                    <i class="fa-solid fa-star absolute top-2 left-6 text-gold-400 text-xs animate-ping"></i>
+                    <i class="fa-solid fa-star absolute bottom-4 right-8 text-gold-400 text-sm animate-ping" style="animation-delay: 1s;"></i>
+                </div>
+
+                <div class="mb-4 text-center">
+                    <p class="text-xs text-slate-300 font-bold uppercase tracking-wider">Contém 5 Figurinhas</p>
+                    <p class="text-[9px] text-slate-500 font-mono mt-0.5">Clique para abrir o pacote</p>
+                </div>
+            </div>
+        </div>
+        
+        <p class="text-slate-400 text-xs mt-6 font-medium animate-pulse">Abra o pacotinho de figurinhas para revelar sua escalação!</p>
+    </div>
 
     <!-- Container de Partículas Animadas (Corações, Bolas de Futebol, Troféus, Bandeirinhas) -->
     <div id="particles-container"></div>
@@ -815,6 +915,41 @@
     <!-- ==================== LÓGICA JAVASCRIPT ==================== -->
     <script>
         // --- CONSTANTES E SELETORES ---
+        // --- AUXILIARES DE ENCODING/ROUTING (LINK PERSONALIZADO) ---
+        function slugify(text) {
+            return text.toString().toLowerCase()
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/[^\w\-]+/g, '')
+                .replace(/\-\-+/g, '-')
+                .replace(/^-+/, '')
+                .replace(/-+$/, '');
+        }
+
+        function serializeState(p1, p2, date, msg) {
+            const data = { p1, p2, date, msg };
+            const jsonStr = JSON.stringify(data);
+            const base64 = btoa(encodeURIComponent(jsonStr).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+                return String.fromCharCode('0x' + p1);
+            }));
+            const slug = `${slugify(p1)}-e-${slugify(p2)}`;
+            return `#/${slug}?c=${base64}`;
+        }
+
+        function deserializeState(hash) {
+            try {
+                if (!hash || !hash.includes('?c=')) return null;
+                const base64 = hash.split('?c=')[1];
+                const jsonStr = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                return JSON.parse(jsonStr);
+            } catch (e) {
+                console.error("Erro ao decodificar URL:", e);
+                return null;
+            }
+        }
+
         let currentPhotos = [];
         let romanceInterval = null;
         let carouselInterval = null;
@@ -872,13 +1007,13 @@
 
         let partnerPhotos = [];
 
-        // Imagens default (Unsplash elegantes de casal/estádios/romance)
+        // Imagens default (Casais românticos com roupas do Brasil e vibe de torcida)
         const placeholderImages = [
-            'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=600&q=80', // Casal sorrindo
-            'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80', // Abraço
-            'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80', // Estádio / Esportes vibe
-            'https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?auto=format&fit=crop&w=600&q=80', // Celebração de vitória
-            'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=600&q=80'  // Casal de mãos dadas
+            'https://images.unsplash.com/photo-1628157582853-a796fa650a6a?auto=format&fit=crop&w=600&q=80', // Casal sorrindo com roupas nas cores amarelo/verde
+            'https://images.unsplash.com/photo-1565992441121-4367c2967103?auto=format&fit=crop&w=600&q=80', // Casal abraçado vibrando no estádio
+            'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=600&q=80', // Casal feliz celebrando em dia de jogo
+            'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80', // Torcida animada no estádio de futebol
+            'https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=600&q=80'  // Cenário de estádio sob luzes de comemoração
         ];
 
 
@@ -1190,6 +1325,55 @@
         }
 
 
+        // --- EXPLOSÃO DE CORAÇÕES COM BRILHO DOURADO ---
+        function createHeartBurst() {
+            const overlay = document.getElementById('sticker-pack-overlay');
+            if (!overlay) return;
+
+            const packContainer = document.getElementById('sticker-pack-container');
+            if (!packContainer) return;
+            
+            const rect = packContainer.getBoundingClientRect();
+            const startX = rect.left + rect.width / 2;
+            const startY = rect.top + rect.height / 2;
+
+            const heartCount = 35; // Quantidade de coraçõezinhos para uma explosão volumosa
+            const colors = ['#f43f5e', '#e11d48', '#fda4af', '#facc15', '#fb7185', '#ca8a04']; // Tons de rosa, vermelho e dourado
+
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('i');
+                // Alterna entre corações preenchidos e contornos para riqueza visual
+                heart.className = Math.random() > 0.4 ? 'fa-solid fa-heart heart-burst-particle' : 'fa-regular fa-heart heart-burst-particle';
+                
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 80 + Math.random() * 260; // Raio da explosão em pixels
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                const scale = Math.random() * 0.8 + 0.6; // Escala entre 0.6x e 1.4x
+                const rot = (Math.random() - 0.5) * 270; // Rotação aleatória
+
+                heart.style.left = startX + 'px';
+                heart.style.top = startY + 'px';
+                heart.style.setProperty('--tx', `${tx}px`);
+                heart.style.setProperty('--ty', `${ty}px`);
+                heart.style.setProperty('--scale', scale);
+                heart.style.setProperty('--rot', `${rot}deg`);
+                heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+
+                // Durações ligeiramente diferentes para naturalidade
+                const duration = 0.7 + Math.random() * 0.6;
+                heart.style.animationDuration = duration + 's';
+
+                overlay.appendChild(heart);
+
+                // Limpeza pós-animação
+                setTimeout(() => {
+                    heart.remove();
+                }, duration * 1000);
+            }
+        }
+
+
         // --- CARREGAR DADOS NA TELA 2 (ÁLBUM) ---
         function loadAlbumScreen(data) {
             // Nomes no Card
@@ -1227,12 +1411,43 @@
                 partnerCustomizerPanel.classList.remove('hidden');
             }
 
-            // Exibe a Tela 2 e oculta a 1
-            screenConfig.classList.add('hidden');
-            screenAlbum.classList.remove('hidden');
-            
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // --- FLUXO DE ABERTURA DO PACOTINHO ---
+            const overlay = document.getElementById('sticker-pack-overlay');
+            const container = document.getElementById('sticker-pack-container');
+            const flash = document.getElementById('gold-flash');
+
+            // Mostra o overlay do pacotinho e limpa qualquer animação anterior
+            overlay.classList.remove('hidden');
+            container.classList.remove('shake-animation');
+            flash.classList.remove('active');
+
+            // Garante que a tela 2 ainda está oculta e a 1 visível enquanto o pacote não for aberto
+            screenConfig.classList.remove('hidden');
+            screenAlbum.classList.add('hidden');
+
+            // Clique único para abrir
+            container.onclick = function() {
+                container.onclick = null;
+                container.classList.add('shake-animation');
+
+                setTimeout(() => {
+                    flash.classList.add('active');
+                    createHeartBurst();
+
+                    setTimeout(() => {
+                        screenConfig.classList.add('hidden');
+                        screenAlbum.classList.remove('hidden');
+                        overlay.classList.add('hidden');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                        setTimeout(() => {
+                            flash.classList.remove('active');
+                        }, 250);
+
+                    }, 250);
+
+                }, 700);
+            };
         }
 
 
@@ -1252,19 +1467,16 @@
                 localStorage.removeItem('casal_campeao_photos');
             }
 
-            // Cria os Query Params
-            const params = new URLSearchParams();
-            params.set('p1', p1);
-            params.set('p2', p2);
-            params.set('date', date);
-            params.set('msg', msg);
-            params.set('mode', 'real');
+            // Cria o link personalizado com a hash
+            const route = serializeState(p1, p2, date, msg);
+            
+            // Link limpo de compartilhamento
+            const cleanShareUrl = `${window.location.origin}${window.location.pathname}${route}`;
+            shareLinkInput.value = cleanShareUrl;
 
-            // Adiciona criador = true para mostrar a caixa de link compartilhável no próprio criador
-            params.set('creator', 'true');
-
-            // Atualiza URL no navegador sem recarregar
-            const newUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+            // Atualiza URL no navegador incluindo indicador de criador
+            const creatorRoute = route + "&creator=true";
+            const newUrl = `${window.location.origin}${window.location.pathname}${creatorRoute}`;
             window.history.pushState({ path: newUrl }, '', newUrl);
 
             // Carrega Tela 2
@@ -1276,11 +1488,6 @@
 
             // Mostra painel de compartilhamento
             sharingPanel.classList.remove('hidden');
-            
-            // Link de compartilhamento limpo (sem &creator=true)
-            params.delete('creator');
-            const cleanShareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
-            shareLinkInput.value = cleanShareUrl;
         });
 
 
@@ -1455,14 +1662,27 @@
         }
 
 
-        // --- INICIALIZAÇÃO E CHECAGEM DE QUERY PARAMS ---
+        // --- INICIALIZAÇÃO E CHECAGEM DE QUERY PARAMS OU HASH ---
         window.addEventListener('DOMContentLoaded', () => {
-            const params = new URLSearchParams(window.location.search);
-            const p1 = params.get('p1');
-            const p2 = params.get('p2');
-            const date = params.get('date');
-            const msg = params.get('msg');
-            const creator = params.get('creator');
+            let p1, p2, date, msg, creator = false;
+
+            // 1. Tenta decodificar a partir da hash (Link Personalizado)
+            const hashData = deserializeState(window.location.hash);
+            if (hashData) {
+                p1 = hashData.p1;
+                p2 = hashData.p2;
+                date = hashData.date;
+                msg = hashData.msg;
+                creator = window.location.hash.includes('&creator=true');
+            } else {
+                // 2. Fallback para Query Params (Retrocompatibilidade)
+                const params = new URLSearchParams(window.location.search);
+                p1 = params.get('p1');
+                p2 = params.get('p2');
+                date = params.get('date');
+                msg = params.get('msg');
+                creator = params.get('creator') === 'true';
+            }
 
             if (p1 && p2 && date && msg) {
                 // Carrega diretamente a surpresa
@@ -1470,13 +1690,12 @@
                     p1, p2, date, msg, mode: 'real'
                 });
 
-                if (creator === 'true') {
+                if (creator) {
                     sharingPanel.classList.remove('hidden');
                     
-                    // Link de compartilhamento limpo (sem &creator=true)
-                    const cleanParams = new URLSearchParams(window.location.search);
-                    cleanParams.delete('creator');
-                    const cleanShareUrl = `${window.location.origin}${window.location.pathname}?${cleanParams.toString()}`;
+                    // Link de compartilhamento limpo (gerado a partir do estado atual)
+                    const cleanRoute = serializeState(p1, p2, date, msg);
+                    const cleanShareUrl = `${window.location.origin}${window.location.pathname}${cleanRoute}`;
                     shareLinkInput.value = cleanShareUrl;
                 } else {
                     sharingPanel.classList.add('hidden');
